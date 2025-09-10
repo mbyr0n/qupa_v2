@@ -99,6 +99,11 @@ void CQTOpenGLFootBot::DrawLEDs(CFootBotEntity& c_entity) {
 /****************************************/
 
 void CQTOpenGLFootBot::Render() {
+
+    glPushMatrix();
+
+    glTranslatef(0.0f, 0.0f, 0.3f);
+
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_TEXTURE_COORD_ARRAY);
     glEnableClientState(GL_NORMAL_ARRAY);
@@ -120,6 +125,9 @@ void CQTOpenGLFootBot::Render() {
     glDisableClientState(GL_NORMAL_ARRAY);
     glDisableClientState(GL_TEXTURE_COORD_ARRAY);
     glDisableClientState(GL_VERTEX_ARRAY);
+
+    // <<< CAMBIO AÑADIDO: Restaura la matriz de transformación a su estado original.
+    glPopMatrix();
 }
 
 /****************************************/
