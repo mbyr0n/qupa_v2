@@ -13,7 +13,7 @@ namespace argos {
    class CSpace;
 }
 
-#include "../control_interface/ci_qupa_distance_scanner_sensor.h>"
+#include "../control_interface/ci_qupa_distance_scanner_sensor.h"
 #include "qupa_distance_scanner_equipped_entity.h"
 #include <argos3/core/simulator/entity/embodied_entity.h>
 #include <argos3/core/utility/math/rng.h>

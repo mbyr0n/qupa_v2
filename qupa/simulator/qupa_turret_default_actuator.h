@@ -14,7 +14,7 @@ namespace argos {
    class CQupaTurretDefaultActuator;
 }
 
-#include "../control_interface/ci_qupa_turret_actuator.h>"
+#include "../control_interface/ci_qupa_turret_actuator.h"
 #include "qupa_entity.h"
 #include "qupa_turret_entity.h"
 #include <argos3/core/simulator/actuator.h>
