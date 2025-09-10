@@ -186,6 +186,8 @@ namespace argos {
          m_pcGroundSensorEquippedEntity =
             new CGroundSensorEquippedEntity(this, "ground_0");
          AddComponent(*m_pcGroundSensorEquippedEntity);
+
+         // --- Sensores de Escala de Grises (4 en total) - Índices [0] a [3] ---
          m_pcGroundSensorEquippedEntity->AddSensor(CVector2(0.063, 0.0116),
                                                    CGroundSensorEquippedEntity::TYPE_GRAYSCALE,
                                                    m_pcEmbodiedEntity->GetOriginAnchor());
@@ -198,6 +200,8 @@ namespace argos {
          m_pcGroundSensorEquippedEntity->AddSensor(CVector2(0.063, -0.0116),
                                                    CGroundSensorEquippedEntity::TYPE_GRAYSCALE,
                                                    m_pcEmbodiedEntity->GetOriginAnchor());
+
+         // --- Sensores de Blanco y Negro (8 en total) - Índices [4] a [11] ---
          m_pcGroundSensorEquippedEntity->AddSensor(CVector2(0.08, 0.0),
                                                    CGroundSensorEquippedEntity::TYPE_BLACK_WHITE,
                                                    m_pcEmbodiedEntity->GetOriginAnchor());
@@ -221,6 +225,11 @@ namespace argos {
                                                    m_pcEmbodiedEntity->GetOriginAnchor());
          m_pcGroundSensorEquippedEntity->AddSensor(CVector2(0.042, -0.065),
                                                    CGroundSensorEquippedEntity::TYPE_BLACK_WHITE,
+                                                   m_pcEmbodiedEntity->GetOriginAnchor());
+
+         // <<< NUEVO SENSOR AÑADIDO AL FINAL - Índice [12] --- SEnsor del QUPA
+         m_pcGroundSensorEquippedEntity->AddSensor(CVector2(0.063, 0.0),
+                                                   CGroundSensorEquippedEntity::TYPE_GRAYSCALE,
                                                    m_pcEmbodiedEntity->GetOriginAnchor());
          /* Distance scanner */
          m_pcDistanceScannerEquippedEntity =
