@@ -1,4 +1,5 @@
-
+# Descarga del paquete
+            git clone --branch estable --single-branch https://github.com/coral-espol/qupa_v2.git
 # Compilación del paquete
 
             cd ~/qupa_v2
