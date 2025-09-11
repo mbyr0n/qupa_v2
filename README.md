@@ -29,3 +29,10 @@ cmake -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_INSTALL_PREFIX="/usr/local" \
       -DCMAKE_PREFIX_PATH="/usr/local" \
       ../qupa
+
+
+make -j"$(nproc)
+
+
+
+sudo make install
