@@ -1,7 +1,3 @@
-# Descarga del paquete
-            git clone --branch estable --single-branch https://github.com/coral-espol/qupa_v2.git
-# Compilación del paquete
-
             cmake -DCMAKE_BUILD_TYPE=Release \
                   -DARGOS_BUILD_FOR=simulator \
                   -DCMAKE_INSTALL_PREFIX="/usr/local" \
