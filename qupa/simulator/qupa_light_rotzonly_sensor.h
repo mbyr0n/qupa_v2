@@ -40,6 +40,11 @@ namespace argos {
 
       virtual void Reset();
 
+      /* Compat ARGoS beta56 */
+      void Enable();
+      void Disable();
+      bool IsDisabled() const;
+
       /**
        * Returns true if the rays must be shown in the GUI.
        * @return true if the rays must be shown in the GUI.
@@ -81,6 +86,8 @@ namespace argos {
 
       /** Reference to the space */
       CSpace& m_cSpace;
+
+      bool m_bEnabled = true;
    };
 
 }

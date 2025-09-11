@@ -62,12 +62,14 @@ namespace argos {
       m_pcProximityImpl->Init(t_tree);
       // AÑADE ESTA LÍNEA para limitar el número de sensores a 6
       m_tReadings.resize(6);
+      Enable();// <-- añadido: activo por defecto
    }
 
    /****************************************/
    /****************************************/
 
    void CQupaProximityDefaultSensor::Update() {
+      if(IsDisabled()) return;  // <-- añadido
       m_pcProximityImpl->Update();
       // CAMBIA EL LÍMITE DEL BUCLE para que coincida con el nuevo tamaño
       for(size_t i = 0; i < m_tReadings.size(); ++i) {
@@ -89,19 +91,22 @@ namespace argos {
    /****************************************/
    /****************************************/
 
-   void CQupaProximityDefaultSensor::Enable() {
+   /*void CQupaProximityDefaultSensor::Enable() {
      CCI_Sensor::Enable();
      m_pcProximityImpl->Enable();
-   }
+   } */
 
    /****************************************/
    /****************************************/
 
-   void CQupaProximityDefaultSensor::Disable() {
+   /*void CQupaProximityDefaultSensor::Disable() {
      CCI_Sensor::Disable();
      m_pcProximityImpl->Disable();
-   }
+   }*/
 
+   void CQupaProximityDefaultSensor::Enable()  { m_bEnabled = true;  }  // <-- reemplazo
+   void CQupaProximityDefaultSensor::Disable() { m_bEnabled = false; }  // <-- reemplazo
+   bool CQupaProximityDefaultSensor::IsDisabled() const { return !m_bEnabled; } // <-- nuevo
 
    /****************************************/
    /****************************************/

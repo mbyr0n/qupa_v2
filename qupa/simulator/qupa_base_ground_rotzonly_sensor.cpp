@@ -30,6 +30,13 @@ namespace argos {
       m_bAddNoise(false),
       m_cSpace(CSimulator::GetInstance().GetSpace()) {}
 
+
+
+      /* ===== Compatibilidad: ARGoS beta56 no trae Enable/Disable/IsDisabled en CSimulatedSensor ===== */
+   void CQupaBaseGroundRotZOnlySensor::Enable()  { m_bEnabled = true; }
+   void CQupaBaseGroundRotZOnlySensor::Disable() { m_bEnabled = false; }
+   bool CQupaBaseGroundRotZOnlySensor::IsDisabled() const { return !m_bEnabled; }
+
    /****************************************/
    /****************************************/
 

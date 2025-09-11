@@ -30,6 +30,12 @@ namespace argos {
       m_bAddNoise(false),
       m_cSpace(CSimulator::GetInstance().GetSpace()) {}
 
+
+   void CQupaMotorGroundRotZOnlySensor::Enable()  { m_bEnabled = true; }
+   void CQupaMotorGroundRotZOnlySensor::Disable() { m_bEnabled = false; }
+   bool CQupaMotorGroundRotZOnlySensor::IsDisabled() const { return !m_bEnabled; }
+
+
    /****************************************/
    /****************************************/
 
@@ -39,6 +45,8 @@ namespace argos {
       m_pcGroundSensorEntity->Enable();
       m_pcFloorEntity = &m_cSpace.GetFloorEntity();
    }
+
+   
 
    /****************************************/
    /****************************************/

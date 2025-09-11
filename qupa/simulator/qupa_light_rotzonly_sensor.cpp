@@ -57,6 +57,11 @@ namespace argos {
       m_pcRNG(nullptr),
       m_bAddNoise(false),
       m_cSpace(CSimulator::GetInstance().GetSpace()) {}
+   // argos beta 56 compatibilidad 
+   void CQupaLightRotZOnlySensor::Enable()  { m_bEnabled = true; }
+   void CQupaLightRotZOnlySensor::Disable() { m_bEnabled = false; }
+   bool CQupaLightRotZOnlySensor::IsDisabled() const { return !m_bEnabled; }
+
 
    /****************************************/
    /****************************************/
@@ -64,7 +69,7 @@ namespace argos {
    void CQupaLightRotZOnlySensor::SetRobot(CComposableEntity& c_entity) {
       try {
          m_pcEmbodiedEntity = &(c_entity.GetComponent<CEmbodiedEntity>("body"));
-         m_pcControllableEntity = &(c_entity.GetComponent<CControllableEntity>("../controller"));
+         m_pcControllableEntity = &(c_entity.GetComponent<CControllableEntity>("controller"));
          m_pcLightEntity = &(c_entity.GetComponent<CLightSensorEquippedEntity>("light_sensors"));
          m_pcLightEntity->Enable();
       }

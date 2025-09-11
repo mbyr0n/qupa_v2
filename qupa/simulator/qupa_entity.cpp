@@ -278,7 +278,7 @@ namespace argos {
          AddComponent(*m_pcBatteryEquippedEntity);
          /* Controllable entity
             It must be the last one, for actuators/sensors to link to composing entities correctly */
-         m_pcControllableEntity = new CControllableEntity(this, "../controller_0");
+         m_pcControllableEntity = new CControllableEntity(this, "controller");
          AddComponent(*m_pcControllableEntity);
          m_pcControllableEntity->SetController(str_controller_id);
          /* Update components */
@@ -473,7 +473,7 @@ namespace argos {
             It must be the last one, for actuators/sensors to link to composing entities correctly */
          m_pcControllableEntity = new CControllableEntity(this);
          AddComponent(*m_pcControllableEntity);
-         m_pcControllableEntity->Init(GetNode(t_tree, "../controller"));
+         m_pcControllableEntity->Init(GetNode(t_tree, "controller"));
          /* Update components */
          UpdateComponents();
       }

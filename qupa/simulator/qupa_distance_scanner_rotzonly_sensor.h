@@ -11,6 +11,9 @@ namespace argos {
    class CQupaDistanceScannerRotZOnlySensor;
    class CControllableEntity;
    class CSpace;
+   /*nueva linea */
+   class CComposableEntity;   
+
 }
 
 #include "../control_interface/ci_qupa_distance_scanner_sensor.h"
@@ -41,6 +44,11 @@ namespace argos {
       virtual void Update();
 
       virtual void Reset();
+
+      /* ===== Compatibilidad con ARGoS sin Enable/Disable en CSimulatedSensor ===== */
+      void Enable();                 // <-- añadido
+      void Disable();                // <-- añadido
+      bool IsDisabled() const;       // <-- añadido
 
    private:
 
@@ -99,6 +107,9 @@ namespace argos {
       CVector3 m_cOriginRayEnd;
       CVector3 m_cRayStart;
       CVector3 m_cRayEnd;
+
+      /** Estado de habilitación local del sensor (compatibilidad) */
+      bool m_bEnabled = true;        // <-- añadido
    };
 
 }

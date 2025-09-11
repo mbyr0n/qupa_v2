@@ -38,6 +38,11 @@ namespace argos {
 
    /****************************************/
    /****************************************/
+   /*Lineas que se añaden para compatabilidad con argosbeta56*/
+   void CQupaDistanceScannerRotZOnlySensor::Enable()  { m_bEnabled = true; }
+   void CQupaDistanceScannerRotZOnlySensor::Disable() { m_bEnabled = false; }
+   bool CQupaDistanceScannerRotZOnlySensor::IsDisabled() const { return !m_bEnabled; }
+
 
    void CQupaDistanceScannerRotZOnlySensor::Init(TConfigurationNode& t_tree) {
       try {
@@ -64,7 +69,7 @@ namespace argos {
 
    void CQupaDistanceScannerRotZOnlySensor::SetRobot(CComposableEntity& c_entity) {
       m_pcEmbodiedEntity = &(c_entity.GetComponent<CEmbodiedEntity>("body"));
-      m_pcControllableEntity = &(c_entity.GetComponent<CControllableEntity>("../controller"));
+      m_pcControllableEntity = &(c_entity.GetComponent<CControllableEntity>("controller"));
       m_pcDistScanEntity = &(c_entity.GetComponent<CQupaDistanceScannerEquippedEntity>("distance_scanner"));
       m_pcDistScanEntity->Enable();
    }

@@ -14,6 +14,8 @@ namespace argos {
    class CQupaBaseGroundRotZOnlySensor;
    class CGroundSensorEquippedEntity;
    class CFloorEntity;
+   class CEmbodiedEntity;
+   class CComposableEntity; 
 }
 
 #include "../control_interface/ci_qupa_base_ground_sensor.h"
@@ -41,6 +43,11 @@ namespace argos {
 
       virtual void Reset();
 
+      /* ===== Compatibilidad con ARGoS sin Enable/Disable en CSimulatedSensor ===== */
+      void Enable();                 // <-- añadido
+      void Disable();                // <-- añadido
+      bool IsDisabled() const;       // <-- añadido
+
    protected:
 
       /** Reference to embodied entity associated to this sensor */
@@ -63,6 +70,9 @@ namespace argos {
 
       /** Reference to the space */
       CSpace& m_cSpace;
+
+      /** Estado de habilitación local del sensor (compatibilidad) */
+      bool m_bEnabled = true;        // <-- añadido
    };
 
 }

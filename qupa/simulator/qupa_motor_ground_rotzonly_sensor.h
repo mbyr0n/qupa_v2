@@ -41,6 +41,10 @@ namespace argos {
 
       virtual void Reset();
 
+      void Enable();
+      void Disable();
+      bool IsDisabled() const;
+
    protected:
 
       /** Reference to embodied entity associated to this sensor */
@@ -63,6 +67,8 @@ namespace argos {
 
       /** Reference to the space */
       CSpace& m_cSpace;
+
+      bool m_bEnabled = true;
    };
 
 }
