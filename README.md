@@ -31,7 +31,7 @@ cmake -DCMAKE_BUILD_TYPE=Release \
       ../qupa
 
 
-make -j"$(nproc)
+make -j"$(nproc)"
 
 
 
