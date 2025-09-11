@@ -1,3 +1,7 @@
+xargs -d '\n' -- sudo rm -rfv < install_manifest.txt
+
+
+
 cmake -DCMAKE_BUILD_TYPE=Release \
       -DARGOS_BUILD_FOR=simulator \
       -DCMAKE_INSTALL_PREFIX="/usr/local" \
