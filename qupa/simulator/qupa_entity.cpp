@@ -248,12 +248,13 @@ namespace argos {
          /* Omnidirectional camera equipped entity */
          m_pcOmnidirectionalCameraEquippedEntity =
             new COmnidirectionalCameraEquippedEntity(this,
-                                                     "omnidirectional_camera_0",
+                                                     "omnidirectional_camera",
                                                      c_omnicam_aperture,
                                                      CVector3(0.0f,
                                                               0.0f,
                                                               OMNIDIRECTIONAL_CAMERA_ELEVATION));
          AddComponent(*m_pcOmnidirectionalCameraEquippedEntity);
+         m_pcOmnidirectionalCameraEquippedEntity->Enable();
          /* Perspective camera equipped entity */
          // Declarar cPerspCamOrient y cPerspCamAnchor aquí por primera vez
          CQuaternion cPerspCamOrient(b_perspcam_front ? CRadians::ZERO : -CRadians::PI_OVER_TWO,
@@ -432,7 +433,7 @@ namespace argos {
          GetNodeAttributeOrDefault(t_tree, "omnidirectional_camera_aperture", cAperture, cAperture);
          m_pcOmnidirectionalCameraEquippedEntity =
             new COmnidirectionalCameraEquippedEntity(this,
-                                                     "omnidirectional_camera_0",
+                                                     "omnidirectional_camera",
                                                      ToRadians(cAperture),
                                                      CVector3(0.0f,
                                                               0.0f,
