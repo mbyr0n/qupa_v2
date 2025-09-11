@@ -19,6 +19,9 @@ function init()
     local r,g,b = my_color_from_id()
     robot.leds.set_all_colors(r,g,b)
   end
+  if robot.colored_blob_omnidirectional_camera then
+    robot.colored_blob_omnidirectional_camera.enable()   -- << CLAVE
+  end
 end
 
 function step()

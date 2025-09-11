@@ -28,7 +28,7 @@ namespace argos {
    /****************************************/
 
    static const Real BODY_RADIUS                = 0.28f;
-   static const Real BODY_HEIGHT                = 0.48f;
+   static const Real BODY_HEIGHT                = 1.3f;
 
    static const Real LED_RING_RADIUS            = BODY_RADIUS + 0.005;
 
@@ -50,7 +50,7 @@ namespace argos {
    static const CRadians LED_ANGLE_SLICE        = CRadians(ARGOS_PI / 6.0);
    static const CRadians HALF_LED_ANGLE_SLICE   = LED_ANGLE_SLICE * 0.5f;
 
-   static const Real OMNIDIRECTIONAL_CAMERA_ELEVATION = 0.288699733f;
+   static const Real OMNIDIRECTIONAL_CAMERA_ELEVATION = 0.7f;
 
    //  ángulos de los 6 sensores de proximidad
    static const CRadians QUPA_PROXIMITY_SENSOR_ANGLES[6] = {
