@@ -28,9 +28,9 @@ namespace argos {
    /****************************************/
 
    static const Real BODY_RADIUS                = 0.28f;
-   static const Real BODY_HEIGHT                = 0.48f;
+   static const Real BODY_HEIGHT                = 1.3f;
 
-   static const Real LED_RING_RADIUS            = BODY_RADIUS + 0.005;
+   static const Real LED_RING_RADIUS            = BODY_RADIUS - 0.005;
 
    static const Real INTERWHEEL_DISTANCE        = 0.15f;
    static const Real HALF_INTERWHEEL_DISTANCE   = INTERWHEEL_DISTANCE * 0.5f;
@@ -41,7 +41,7 @@ namespace argos {
    static const CRadians PROXIMITY_SENSOR_RING_START_ANGLE = CRadians((ARGOS_PI / 12.0f) * 0.5f);
    static const Real PROXIMITY_SENSOR_RING_RANGE           = 0.1f;
 
-   static const Real LED_RING_ELEVATION         = 0.1f;
+   static const Real LED_RING_ELEVATION         = 0.4f; /*Modifica altura de leds, el anillo*/
    static const Real RAB_ELEVATION              = 0.1f;
    static const Real BEACON_ELEVATION           = 0.174249733f;
 
@@ -50,7 +50,7 @@ namespace argos {
    static const CRadians LED_ANGLE_SLICE        = CRadians(ARGOS_PI / 6.0);
    static const CRadians HALF_LED_ANGLE_SLICE   = LED_ANGLE_SLICE * 0.5f;
 
-   static const Real OMNIDIRECTIONAL_CAMERA_ELEVATION = 0.288699733f;
+   static const Real OMNIDIRECTIONAL_CAMERA_ELEVATION = 0.7f;
 
    //  ángulos de los 6 sensores de proximidad
    static const CRadians QUPA_PROXIMITY_SENSOR_ANGLES[6] = {
@@ -248,12 +248,13 @@ namespace argos {
          /* Omnidirectional camera equipped entity */
          m_pcOmnidirectionalCameraEquippedEntity =
             new COmnidirectionalCameraEquippedEntity(this,
-                                                     "omnidirectional_camera_0",
+                                                     "omnidirectional_camera",
                                                      c_omnicam_aperture,
                                                      CVector3(0.0f,
                                                               0.0f,
                                                               OMNIDIRECTIONAL_CAMERA_ELEVATION));
          AddComponent(*m_pcOmnidirectionalCameraEquippedEntity);
+         m_pcOmnidirectionalCameraEquippedEntity->Enable();
          /* Perspective camera equipped entity */
          // Declarar cPerspCamOrient y cPerspCamAnchor aquí por primera vez
          CQuaternion cPerspCamOrient(b_perspcam_front ? CRadians::ZERO : -CRadians::PI_OVER_TWO,
@@ -432,7 +433,7 @@ namespace argos {
          GetNodeAttributeOrDefault(t_tree, "omnidirectional_camera_aperture", cAperture, cAperture);
          m_pcOmnidirectionalCameraEquippedEntity =
             new COmnidirectionalCameraEquippedEntity(this,
-                                                     "omnidirectional_camera_0",
+                                                     "omnidirectional_camera",
                                                      ToRadians(cAperture),
                                                      CVector3(0.0f,
                                                               0.0f,
