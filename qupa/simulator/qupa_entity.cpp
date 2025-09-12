@@ -30,7 +30,7 @@ namespace argos {
    static const Real BODY_RADIUS                = 0.28f;
    static const Real BODY_HEIGHT                = 1.3f;
 
-   static const Real LED_RING_RADIUS            = BODY_RADIUS + 0.005;
+   static const Real LED_RING_RADIUS            = BODY_RADIUS - 0.005;
 
    static const Real INTERWHEEL_DISTANCE        = 0.15f;
    static const Real HALF_INTERWHEEL_DISTANCE   = INTERWHEEL_DISTANCE * 0.5f;
@@ -41,7 +41,7 @@ namespace argos {
    static const CRadians PROXIMITY_SENSOR_RING_START_ANGLE = CRadians((ARGOS_PI / 12.0f) * 0.5f);
    static const Real PROXIMITY_SENSOR_RING_RANGE           = 0.1f;
 
-   static const Real LED_RING_ELEVATION         = 0.1f;
+   static const Real LED_RING_ELEVATION         = 0.4f; /*Modifica altura de leds, el anillo*/
    static const Real RAB_ELEVATION              = 0.1f;
    static const Real BEACON_ELEVATION           = 0.174249733f;
 
