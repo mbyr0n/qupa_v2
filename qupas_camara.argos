@@ -18,7 +18,7 @@
         <colored_blob_omnidirectional_camera implementation="rot_z_only" medium="leds" show_rays="true" />
       </sensors>
         <media>
-          <led id="leds" index="grid" grid_size="8,8,1"/> <!-- opcional: grid más fino -->
+          <led id="leds" index="grid" grid_size="1,1,1"/> <!-- opcional: grid más fino -->
           <range_and_bearing id="rab" index="grid" grid_size="1,1,1" />
         </media>
       <params />
@@ -26,6 +26,7 @@
   </controllers>
 
   <arena size="8, 8, 1" center="0,0,0.5">
+  
     <box id="bn" size="0.1, 8, 0.2" movable="false"><body position="4,0,0"  orientation="0,0,0" /></box>
     <box id="bs" size="0.1, 8, 0.2" movable="false"><body position="-4,0,0" orientation="0,0,0" /></box>
     <box id="be" size="8, 0.1, 0.2" movable="false"><body position="0,-4,0" orientation="0,0,0" /></box>
