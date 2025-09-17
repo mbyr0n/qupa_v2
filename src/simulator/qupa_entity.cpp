@@ -27,21 +27,21 @@ namespace argos {
    /****************************************/
    /****************************************/
 
-   static const Real BODY_RADIUS                = 0.28f;
-   static const Real BODY_HEIGHT                = 1.3f;
+   static const Real BODY_RADIUS                = 0.15f;
+   static const Real BODY_HEIGHT                = 0.9f;
 
-   static const Real LED_RING_RADIUS            = BODY_RADIUS - 0.005;
+   static const Real LED_RING_RADIUS            = BODY_RADIUS - 0.03;
 
    static const Real INTERWHEEL_DISTANCE        = 0.15f;
    static const Real HALF_INTERWHEEL_DISTANCE   = INTERWHEEL_DISTANCE * 0.5f;
    static const Real WHEEL_RADIUS               = 0.029112741f;
 
-   static const Real PROXIMITY_SENSOR_RING_ELEVATION       = 0.12f;
+   static const Real PROXIMITY_SENSOR_RING_ELEVATION       = 0.13f;
    static const Real PROXIMITY_SENSOR_RING_RADIUS          = BODY_RADIUS;
    static const CRadians PROXIMITY_SENSOR_RING_START_ANGLE = CRadians((ARGOS_PI / 12.0f) * 0.5f);
    static const Real PROXIMITY_SENSOR_RING_RANGE           = 0.1f;
 
-   static const Real LED_RING_ELEVATION         = 0.4f; /*Modifica altura de leds, el anillo*/
+   static const Real LED_RING_ELEVATION         = 0.22f; /*Modifica altura de leds, el anillo*/
    static const Real RAB_ELEVATION              = 0.1f;
    static const Real BEACON_ELEVATION           = 0.174249733f;
 
@@ -134,14 +134,14 @@ namespace argos {
          AddComponent(*m_pcWheeledEntity);
          m_pcWheeledEntity->SetWheel(0, CVector3(0.0f,  HALF_INTERWHEEL_DISTANCE, 0.0f), WHEEL_RADIUS);
          m_pcWheeledEntity->SetWheel(1, CVector3(0.0f, -HALF_INTERWHEEL_DISTANCE, 0.0f), WHEEL_RADIUS);
-         /* LED equipped entity, with LEDs [0-11] and beacon [12] */
+         /* LED equipped entity, with LEDs [0-5] and beacon [6] */
          m_pcLEDEquippedEntity = new CLEDEquippedEntity(this, "leds_0");
          AddComponent(*m_pcLEDEquippedEntity);
          m_pcLEDEquippedEntity->AddLEDRing(
             CVector3(0.0f, 0.0f, LED_RING_ELEVATION),
             LED_RING_RADIUS,
             HALF_LED_ANGLE_SLICE,
-            12,
+            6,
             cTurretAnchor);
          m_pcLEDEquippedEntity->AddLED(
             CVector3(0.0f, 0.0f, BEACON_ELEVATION),
@@ -315,14 +315,14 @@ namespace argos {
          AddComponent(*m_pcWheeledEntity);
          m_pcWheeledEntity->SetWheel(0, CVector3(0.0f,  HALF_INTERWHEEL_DISTANCE, 0.0f), WHEEL_RADIUS);
          m_pcWheeledEntity->SetWheel(1, CVector3(0.0f, -HALF_INTERWHEEL_DISTANCE, 0.0f), WHEEL_RADIUS);
-         /* LED equipped entity, with LEDs [0-11] and beacon [12] */
+         /* LED equipped entity, with LEDs [0-5] and beacon [6] */
          m_pcLEDEquippedEntity = new CLEDEquippedEntity(this, "leds_0");
          AddComponent(*m_pcLEDEquippedEntity);
          m_pcLEDEquippedEntity->AddLEDRing(
             CVector3(0.0f, 0.0f, LED_RING_ELEVATION),
             LED_RING_RADIUS,
             HALF_LED_ANGLE_SLICE,
-            12,
+            6,
             cTurretAnchor);
          m_pcLEDEquippedEntity->AddLED(
             CVector3(0.0f, 0.0f, BEACON_ELEVATION),
