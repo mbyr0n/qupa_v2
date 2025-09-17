@@ -23,6 +23,13 @@ namespace argos {
 /****************************************/
 
 CQTOpenGLQupa::CQTOpenGLQupa() {
+    // --- INICIALIZACIÓN DE LA ESCALA ---
+    // Aquí puedes poner el valor que quieras.
+    // 1.0f = tamaño original (100%)
+    // 0.9f = 90% del tamaño original
+    // 1.5f = 150% del tamaño original
+    m_fScale = 0.5f;
+
     // Creamos la display list para el cuerpo del robot
     m_unBodyList = glGenLists(1);
     glNewList(m_unBodyList, GL_COMPILE);
@@ -32,7 +39,7 @@ CQTOpenGLQupa::CQTOpenGLQupa() {
     // Creamos la display list para una esfera de LED
     m_unLEDList = glGenLists(1);
     glNewList(m_unLEDList, GL_COMPILE);
-    // Dibuja una esfera de radio 0.01
+    // Dibuja una esfera de radio 0.02
     GLUquadric* pcQuadric = gluNewQuadric();
     gluSphere(pcQuadric, 0.02, 10, 10);
     gluDeleteQuadric(pcQuadric);
@@ -72,10 +79,10 @@ void CQTOpenGLQupa::DrawLEDs(CQupaEntity& c_entity) {
         // Guarda la matriz de transformación actual
         glPushMatrix();
         
-        // Obtiene el color del LED (esto estaba bien)
+        // Obtiene el color del LED
         const CColor& cColor = cLEDEquippedEntity.GetLED(i).GetColor();
         
-        // Obtiene la posición del LED (ESTA ES LA LÍNEA CORREGIDA)
+        // Obtiene la posición del LED
         const CVector3& cOffset = cLEDEquippedEntity.GetLEDOffset(i);
         
         // Establece el color del LED
@@ -99,15 +106,21 @@ void CQTOpenGLQupa::DrawLEDs(CQupaEntity& c_entity) {
 /****************************************/
 
 void CQTOpenGLQupa::Render() {
-
     glPushMatrix();
 
+
+    
+    //  Aplica el factor de escala a los 3 ejes para un cambio uniforme.
+    glScalef(m_fScale, m_fScale, m_fScale);
+
+    // 2. TRASLADAR: Mueve el objeto ya escalado a su posición de ajuste vertical.
     glTranslatef(0.0f, 0.0f, 0.3f);
 
+
+    // --- CÓDIGO DE DIBUJADO (SIN CAMBIOS) ---
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_TEXTURE_COORD_ARRAY);
     glEnableClientState(GL_NORMAL_ARRAY);
-
 
     glVertexPointer(3, GL_FLOAT, 0, &qupaOBJVerts[0]);
     glTexCoordPointer(2, GL_FLOAT, 0, &qupaOBJTexCoords[0]);
@@ -120,13 +133,11 @@ void CQTOpenGLQupa::Render() {
         glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, qupaMTLExponent[i]);
         glDrawArrays(GL_TRIANGLES, qupaMTLFirst[i], qupaMTLCount[i]);
     }
-    // -----------------------------------------------------------
 
     glDisableClientState(GL_NORMAL_ARRAY);
     glDisableClientState(GL_TEXTURE_COORD_ARRAY);
     glDisableClientState(GL_VERTEX_ARRAY);
-
-    // <<< CAMBIO AÑADIDO: Restaura la matriz de transformación a su estado original.
+    
     glPopMatrix();
 }
 
