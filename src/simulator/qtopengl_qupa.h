@@ -4,7 +4,7 @@
 namespace argos {
    class CQupaEntity;
 }
-
+#include <argos3/core/utility/datatypes/datatypes.h>
 #ifdef __APPLE__
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
@@ -45,6 +45,8 @@ namespace argos {
       /* Display list para un único LED (una esfera pequeña) */
       GLuint m_unLEDList;
 
+      // Esta variable controlará la escala del modelo.
+      Real m_fScale;
    };
 }
 
