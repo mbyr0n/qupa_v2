@@ -25,7 +25,7 @@ make install
 To know where argos3 was installed and your own rute put in your terminal the next command.
 
 ```
-wicht argos3 
+which argos3 
 ```
 
 the next command line is an example for other location.
