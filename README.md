@@ -10,11 +10,13 @@ git clone https://github.com/coral-espol/qupa_v2.git
 
 ```
 cd ~/qupa_v2
-mkdir build && cd build
-cmake -DCMAKE_BUILD_TYPE=Release \
-      -DARGOS_BUILD_FOR=simulator \
-      -DCMAKE_INSTALL_PREFIX="$HOME/swarm_robotics/argos3-dist" \
-      ../qupa
+rm -rf build && mkdir build && cd build
+
+cmake ../src \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DARGOS_BUILD_FOR=simulator \
+  -DCMAKE_INSTALL_PREFIX="$HOME/swarm_robotics/argos3-dist"
+
 make -j"$(nproc)"
 make install
 ```
