@@ -1,7 +1,9 @@
 /**
  * @file <argos3/plugins/robots/qupa/simulator/qupa_entity.cpp>
  *
- * @author Carlo Pinciroli - <ilpincy@gmail.com>
+ * @author Jose Santos
+ * Gabriel Madroñero 
+ * - <emails >
  */
 
 #include "qupa_entity.h"
@@ -36,10 +38,10 @@ namespace argos {
    static const Real HALF_INTERWHEEL_DISTANCE   = INTERWHEEL_DISTANCE * 0.5f;
    static const Real WHEEL_RADIUS               = 0.029112741f;
 
-   static const Real PROXIMITY_SENSOR_RING_ELEVATION       = 0.13f;
+   static const Real PROXIMITY_SENSOR_RING_ELEVATION       = 0.07f;
    static const Real PROXIMITY_SENSOR_RING_RADIUS          = BODY_RADIUS;
    static const CRadians PROXIMITY_SENSOR_RING_START_ANGLE = CRadians((ARGOS_PI / 12.0f) * 0.5f);
-   static const Real PROXIMITY_SENSOR_RING_RANGE           = 0.1f;
+   static const Real PROXIMITY_SENSOR_RING_RANGE           = 0.3f; 
 
    static const Real LED_RING_ELEVATION         = 0.22f; /*Modifica altura de leds, el anillo*/
    static const Real RAB_ELEVATION              = 0.1f;
@@ -163,6 +165,7 @@ namespace argos {
                  PROXIMITY_SENSOR_RING_RANGE,
                  m_pcEmbodiedEntity->GetOriginAnchor());
          }
+         m_pcProximitySensorEquippedEntity->Enable();
          // FIN CAMBIO CORREGIDO
          /* Light sensor equipped entity */
          m_pcLightSensorEquippedEntity =
@@ -351,6 +354,7 @@ namespace argos {
                      m_pcEmbodiedEntity->GetOriginAnchor());
              }
          }
+         m_pcProximitySensorEquippedEntity->Enable();
          // FIN CAMBIO CORREGIDO
          /* Light sensor equipped entity */
          m_pcLightSensorEquippedEntity =
@@ -499,13 +503,19 @@ namespace argos {
 #define UPDATE(COMPONENT) if(COMPONENT->IsEnabled()) COMPONENT->Update();
 
    void CQupaEntity::UpdateComponents() {
-      /* Update only the components that might change */
-      UPDATE(m_pcDistanceScannerEquippedEntity);
-      UPDATE(m_pcTurretEntity);
-      UPDATE(m_pcGripperEquippedEntity);
-      UPDATE(m_pcRABEquippedEntity);
-      UPDATE(m_pcLEDEquippedEntity);
-      UPDATE(m_pcBatteryEquippedEntity);
+     UPDATE(m_pcDistanceScannerEquippedEntity);
+     UPDATE(m_pcTurretEntity);
+     UPDATE(m_pcGripperEquippedEntity);
+     UPDATE(m_pcRABEquippedEntity);
+     UPDATE(m_pcLEDEquippedEntity);
+     UPDATE(m_pcBatteryEquippedEntity);
+
+     // FALTABAN ESTAS:
+     UPDATE(m_pcProximitySensorEquippedEntity);
+     UPDATE(m_pcLightSensorEquippedEntity);
+     UPDATE(m_pcGroundSensorEquippedEntity);
+     UPDATE(m_pcOmnidirectionalCameraEquippedEntity);
+     UPDATE(m_pcPerspectiveCameraEquippedEntity);
    }
 
    /****************************************/
