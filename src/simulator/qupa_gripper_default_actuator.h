@@ -1,7 +1,9 @@
 /**
  * @file <argos3/plugins/robots/qupa/simulator/qupa_gripper_default_actuator.h>
  *
- * @author Carlo Pinciroli - <ilpincy@gmail.com>
+ * @author Jose Santos
+ * Gabriel Madroñero 
+ * - <emails >
  */
 
 #ifndef QUPA_GRIPPER_DEFAULT_ACTUATOR_H

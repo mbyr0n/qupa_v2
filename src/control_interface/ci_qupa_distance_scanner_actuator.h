@@ -36,7 +36,9 @@
  *
  *      back
  *
- * @author Carlo Pinciroli - <ilpincy@gmail.com>
+ * @author Jose Santos
+ * Gabriel Madroñero 
+ * - <emails >
  */
 
 #ifndef CCI_QUPA_DISTANCE_SCANNER_ACTUATOR_H

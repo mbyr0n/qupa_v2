@@ -1,7 +1,8 @@
 /**
  * @file <argos3/plugins/simulator/physics_engines/dynamics2d/dynamics2d_differentialsteering_control.cpp>
  *
- * @author Carlo Pinciroli - <ilpincy@gmail.com>
+ * @author Jose Santos
+ * Gabriel Madroñero
  */
 
 #include "pointmass3d_qupa_model.h"

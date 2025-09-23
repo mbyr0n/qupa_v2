@@ -26,7 +26,9 @@
  *
  *       back
  *
- * @author Carlo Pinciroli <ilpincy@gmail.com>
+ * @author Jose Santos
+ * Gabriel Madroñero 
+ * - <emails >
  */
 
 #ifndef CCI_QUPA_MOTOR_GROUND_SENSOR_H

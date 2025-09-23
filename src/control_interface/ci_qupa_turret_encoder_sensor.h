@@ -7,7 +7,9 @@
  * The turret rotation is expressed in radians [-pi,pi], counter-clockwise positive when
  * looking from above.
  *
- * @author Carlo Pinciroli - <ilpincy@gmail.com>
+ * @author Jose Santos
+ * Gabriel Madroñero 
+ * - <emails >
  */
 
 #ifndef CCI_QUPA_TURRET_ENCODER_SENSOR_H

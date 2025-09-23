@@ -1,7 +1,9 @@
 /**
  * @file <argos3/plugins/robots/qupa/simulator/qupa_turret_default_actuator.cpp>
  *
- * @author Carlo Pinciroli - <ilpincy@gmail.com>
+ * @author Jose Santos
+ * Gabriel Madroñero 
+ * - <emails >
  */
 
 #include "qupa_turret_default_actuator.h"

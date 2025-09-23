@@ -1,7 +1,9 @@
 /**
  * @file <argos3/plugins/robots/qupa/simulator/qupa_motor_ground_rotzonly_sensor.cpp>
  *
- * @author Carlo Pinciroli - <ilpincy@gmail.com>
+ * @author Jose Santos
+ * Gabriel Madroñero 
+ * - <emails >
  */
 
 #include <argos3/core/simulator/simulator.h>

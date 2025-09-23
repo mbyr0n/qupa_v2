@@ -1,7 +1,9 @@
 /**
  * @file <argos3/plugins/robots/qupa/simulator/qupa_turret_encoder_default_sensor.h>
  *
- * @author Carlo Pinciroli - <ilpincy@gmail.com>
+ * @author Jose Santos
+ * Gabriel Madroñero 
+ * - <emails >
  */
 
 #ifndef QUPA_TURRET_ENCODER_DEFAULT_SENSOR_H

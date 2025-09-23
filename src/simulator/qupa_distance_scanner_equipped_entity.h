@@ -1,7 +1,8 @@
 /**
  * @file <argos3/plugins/robots/qupa/simulator/qupa_distance_scanner_equipped_entity.h>
  *
- * @author Carlo Pinciroli - <ilpincy@gmail.com>
+ * @author Jose Santos
+ * Gabriel Madroñero
  */
 
 #ifndef QUPA_DISTANCE_SCANNER_EQUIPPED_ENTITY_H

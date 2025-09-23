@@ -1,7 +1,8 @@
 /**
  * @file <argos3/plugins/robots/qupa/simulator/qupa_distance_scanner_rotzonly_sensor.cpp>
  *
- * @author Carlo Pinciroli - <ilpincy@gmail.com>
+ * @author Jose Santos
+ * Gabriel Madroñero    
  */
 
 #include "qupa_distance_scanner_rotzonly_sensor.h"

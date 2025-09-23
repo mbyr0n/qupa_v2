@@ -9,7 +9,9 @@
  * direction the 2 side pins of the gripper move upwards and the middle pin
  * downwards.
  *
- * @author Carlo Pinciroli - <ilpincy@gmail.com>
+ * @author Jose Santos
+ * Gabriel Madroñero 
+ * - <emails >
  */
 
 #ifndef CCI_QUPA_GRIPPER_ACTUATOR_H

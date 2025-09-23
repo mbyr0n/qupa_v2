@@ -27,7 +27,9 @@
  *
  *       back
  *
- * @author Carlo Pinciroli <ilpincy@gmail.com>
+ * @author Jose Santos
+ * Gabriel Madroñero 
+ * - <emails >
  */
 
 #include "ci_qupa_base_ground_sensor.h"

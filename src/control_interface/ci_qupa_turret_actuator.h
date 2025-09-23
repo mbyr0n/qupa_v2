@@ -37,7 +37,9 @@
  * the turret to assess whether gripping was successful. In the meantime EVERY command issued to
  * the turret is IGNORED. The check operation lasts less than a second.
  *
- * @author Carlo Pinciroli - <ilpincy@gmail.com>
+ * @author Jose Santos
+ * Gabriel Madroñero 
+ * - <emails >
  */
 
 #ifndef CCI_QUPA_TURRET_ACTUATOR_H

@@ -44,8 +44,9 @@
  *
  *      back
  *
- * @author Carlo Pinciroli - <ilpincy@gmail.com>
- * @author Manuele Brambilla - <mbrambilla@iridia.ulb.ac.be>
+ * @author Jose Santos
+ * Gabriel Madroñero 
+ * - <emails >
  */
 
 #ifndef CCI_QUPA_DISTANCE_SCANNER_SENSOR_H

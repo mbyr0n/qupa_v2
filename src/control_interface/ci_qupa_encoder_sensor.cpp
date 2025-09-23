@@ -1,7 +1,9 @@
 /**
  * @file <argos3/plugins/robots/qupa/control_interface/ci_qupa_encoder_sensor.cpp>
  *
- * @author Carlo Pinciroli - <ilpincy@gmail.com>
+ * @author Jose Santos
+ * Gabriel Madroñero 
+ * - <emails >
  */
 
 #include "ci_qupa_encoder_sensor.h"

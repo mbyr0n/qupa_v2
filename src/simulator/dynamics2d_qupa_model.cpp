@@ -1,7 +1,8 @@
 /**
  * @file <argos3/plugins/robots/qupa/simulator/dynamics2d_qupa_model.cpp>
  *
- * @author Carlo Pinciroli - <ilpincy@gmail.com>
+ * @author Jose Santos
+ * Gabriel Madroñero 
  */
 
 #include "dynamics2d_qupa_model.h"

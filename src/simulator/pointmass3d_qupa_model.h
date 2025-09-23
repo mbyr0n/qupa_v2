@@ -1,7 +1,8 @@
 /**
  * @file <argos3/plugins/simulator/robots/qupa/simulator/pointmass3d/pointmass3d_qupa_model.h>
  *
- * @author Carlo Pinciroli - <cpinciro@ulb.ac.be>
+ * @author Jose Santos
+ * Gabriel Madroñero
  */
 
 #ifndef POINTMASS3D_QUPA_H

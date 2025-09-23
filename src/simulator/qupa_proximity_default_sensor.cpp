@@ -1,7 +1,9 @@
 /**
  * @file <argos3/plugins/robots/qupa/simulator/qupa_proximity_default_sensor.cpp>
  *
- * @author Carlo Pinciroli - <ilpincy@gmail.com>
+ * @authorJose Santos
+ * Gabriel Madroñero 
+ * - <emails >
  */
 
 #include <argos3/core/simulator/entity/embodied_entity.h>

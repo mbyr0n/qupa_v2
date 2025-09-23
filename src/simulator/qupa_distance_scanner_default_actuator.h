@@ -1,7 +1,9 @@
 /**
  * @file <argos3/plugins/robots/qupa/simulator/qupa_distance_scanner_default_actuator.h>
  *
- * @author Carlo Pinciroli - <ilpincy@gmail.com>
+ * @author Jose Santos
+ * Gabriel Madroñero
+ * - <emails >
  */
 
 #ifndef QUPA_DISTANCE_SCANNER_DEFAULT_ACTUATOR_H

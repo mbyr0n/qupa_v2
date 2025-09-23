@@ -10,7 +10,9 @@
  * i.e. the external distance between the two wheels.
  * This value is measured once at start-up and then is left constant.
  *
- * @author Carlo Pinciroli - <ilpincy@gmail.com>
+ * @author Jose Santos
+ * Gabriel Madroñero 
+ * - <emails >
  */
 
 #ifndef CCI_QUPA_ENCODER_SENSOR_H
