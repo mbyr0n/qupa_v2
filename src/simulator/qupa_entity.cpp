@@ -52,7 +52,7 @@ namespace argos {
    static const CRadians LED_ANGLE_SLICE        = CRadians(ARGOS_PI / 6.0);
    static const CRadians HALF_LED_ANGLE_SLICE   = LED_ANGLE_SLICE * 0.5f;
 
-   static const Real OMNIDIRECTIONAL_CAMERA_ELEVATION = 0.7f;
+   static const Real OMNIDIRECTIONAL_CAMERA_ELEVATION = 0.5f;
 
    //  ángulos de los 6 sensores de proximidad
    static const CRadians QUPA_PROXIMITY_SENSOR_ANGLES[6] = {

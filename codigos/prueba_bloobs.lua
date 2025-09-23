@@ -1,5 +1,5 @@
 -- camera_blobs_qupa.lua  (versión "array de blobs")
-local BASE_SPEED, TURN_GAIN, THRESHOLD = 8.0, 6.0, 0.15
+local BASE_SPEED, TURN_GAIN, THRESHOLD = 8.0, 6.0, 0.01
 
 local HAS = {}
 

@@ -1,7 +1,7 @@
 -- camera_blobs_qupa.lua  
 local SPD_FWD  = 8.0
 local SPD_TURN = 6.0
-local PROX_THR = 0.2
+local PROX_THR = 0.02
 local TARGET   = "red"   -- "red" | "green" | "blue" | nil (nil = cualquier color)
 
 local has_leds   = (robot.leds   and robot.leds.set_all_colors)

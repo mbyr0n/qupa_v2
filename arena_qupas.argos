@@ -11,16 +11,13 @@
         <leds implementation="default" medium="leds" />
       </actuators>
       <sensors>
-        <qupa_proximity implementation="default" />
+        <qupa_proximity implementation="default" show_rays="true"/>
         <colored_blob_omnidirectional_camera implementation="rot_z_only" medium="leds" show_rays="true" />
       </sensors>
       <params/>
     </lua_controller>
   </controllers>
 <arena size="20, 20, 1" center="0,0,0.5">
-
-
-    
 <!-- LEDs para todas las paredes -->
 
 <!-- LEDs en wall_north (y=6.7, ang=0°) -->
@@ -109,8 +106,6 @@
     </qupa>
   </entity>
 </distribute>
-
-  
 
 </arena>
   <physics_engines>
