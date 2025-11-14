@@ -43,3 +43,5 @@ make install
 ```
 argos3 -c test_qupa.argos
 ```
+![QUPA ROBOT](qupas_argops3.png)
+![QUPA SENSORS BLOBS](bloobs_leds.png)
