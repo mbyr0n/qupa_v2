@@ -22,11 +22,19 @@ namespace argos {
    public:
 
       virtual Real CalculateReading(Real f_distance) {
-         if(f_distance < 0.009889556) {
+         /* Saturación a los 4cm (0.04m) según el sensor real */
+         if(f_distance <= 0.04) {
             return 1.0;
          }
+         /* Corte a los 50cm (0.50m) */
+         else if(f_distance >= 0.50) {
+            return 0.0;
+         }
+         /* Curva de respuesta ajustada para el rango 4cm - 50cm 
+            Usamos una función que entregue ~0.05 
+            cuando el objeto está a 50cm. */
          else {
-            return 0.0100527 / (f_distance + 0.000163144);
+            return 0.025 / (f_distance + 0.015);
          }
       }
 

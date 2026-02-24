@@ -20,11 +20,11 @@ namespace argos {
 
    static const Real SHORT_RANGE_MIN_DISTANCE = 0.0f;
    static const Real SHORT_RANGE_RAY_START    = QUPA_RADIUS;
-   static const Real SHORT_RANGE_RAY_END      = QUPA_RADIUS + 0.26f;
+   static const Real SHORT_RANGE_RAY_END      = QUPA_RADIUS + 0.1f;
 
-   static const Real LONG_RANGE_MIN_DISTANCE  = 0.12f;
+   static const Real LONG_RANGE_MIN_DISTANCE  = 0.012f;
    static const Real LONG_RANGE_RAY_START     = QUPA_RADIUS;
-   static const Real LONG_RANGE_RAY_END       = QUPA_RADIUS + 1.42f;
+   static const Real LONG_RANGE_RAY_END       = QUPA_RADIUS + 0.5f;
 
    static const Real SENSOR_ELEVATION         = 0.123199866f;
 

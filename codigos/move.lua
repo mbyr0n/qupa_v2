@@ -1,7 +1,7 @@
 -- qupa_avoid.lua
-local BASE_SPEED = 8.0     -- velocidad base (cm/s aprox)
-local TURN_GAIN  = 6.0     -- cuanto gira ante obstáculo
-local THRESHOLD  = 0.01    -- umbral de "hay algo cerca"
+local BASE_SPEED = 10.0     -- velocidad base (cm/s aprox)
+local TURN_GAIN  = 8.0     -- cuanto gira ante obstáculo
+local THRESHOLD  = 0.02    -- umbral de "hay algo cerca"
 
 -- helpers: presencia de APIs según el robot
 local has_wheels = (robot.wheels and robot.wheels.set_velocity)

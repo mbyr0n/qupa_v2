@@ -2,8 +2,7 @@
  * @file <argos3/plugins/robots/qupa/simulator/qupa_entity.cpp>
  *
  * @author Jose Santos
- * Gabriel Madroñero 
- * - <emails >
+ * @author Gabriel Mauricio Madroñero Pachajoa
  */
 
 #include "qupa_entity.h"
@@ -41,9 +40,11 @@ namespace argos {
    static const Real PROXIMITY_SENSOR_RING_ELEVATION       = 0.07f;
    static const Real PROXIMITY_SENSOR_RING_RADIUS          = BODY_RADIUS;
    static const CRadians PROXIMITY_SENSOR_RING_START_ANGLE = CRadians((ARGOS_PI / 12.0f) * 0.5f);
-   static const Real PROXIMITY_SENSOR_RING_RANGE           = 0.3f; 
+   
+   /* AJUSTE 1: Rango de los rayos de proximidad extendido a 50cm */
+   static const Real PROXIMITY_SENSOR_RING_RANGE           = 0.5f; 
 
-   static const Real LED_RING_ELEVATION         = 0.22f; /*Modifica altura de leds, el anillo*/
+   static const Real LED_RING_ELEVATION         = 0.22f;
    static const Real RAB_ELEVATION              = 0.1f;
    static const Real BEACON_ELEVATION           = 0.174249733f;
 
@@ -54,17 +55,15 @@ namespace argos {
 
    static const Real OMNIDIRECTIONAL_CAMERA_ELEVATION = 0.5f;
 
-   //  ángulos de los 6 sensores de proximidad
+   /* Ángulos de los 6 sensores de proximidad (ajustados para cubrir el frente y laterales) */
    static const CRadians QUPA_PROXIMITY_SENSOR_ANGLES[6] = {
-        CRadians(0.0f),           // Sensor 1: 0° (frontal)
-        CRadians(-ARGOS_PI / 4),   // Sensor 2: 45°
-        CRadians(ARGOS_PI / 4),   // Sensor 2: 45°
-        CRadians(-ARGOS_PI / 2),   // Sensor 3: 90° (lateral derecho)
-        CRadians(ARGOS_PI / 2),   // Sensor 3: 90° (lateral derecho)
-        CRadians(ARGOS_PI),       // Sensor 5: 180° (trasero)
-
+        CRadians(0.0f),            // Frente (0°)
+        CRadians(-ARGOS_PI / 4.0f), // 45° Derecha
+        CRadians(ARGOS_PI / 4.0f),  // 45° Izquierda
+        CRadians(-ARGOS_PI / 2.0f), // 90° Derecha
+        CRadians(ARGOS_PI / 2.0f),  // 90° Izquierda
+        CRadians(ARGOS_PI)          // Atrás (180°)
    };
-
 
    CQupaEntity::CQupaEntity() :
       CComposableEntity(nullptr),
@@ -81,11 +80,7 @@ namespace argos {
       m_pcProximitySensorEquippedEntity(nullptr),
       m_pcRABEquippedEntity(nullptr),
       m_pcWheeledEntity(nullptr),
-      m_pcBatteryEquippedEntity(nullptr) {
-   }
-
-   /****************************************/
-   /****************************************/
+      m_pcBatteryEquippedEntity(nullptr) {}
 
    CQupaEntity::CQupaEntity(const std::string& str_id,
                                   const std::string& str_controller_id,
@@ -115,50 +110,30 @@ namespace argos {
       m_pcWheeledEntity(nullptr),
       m_pcBatteryEquippedEntity(nullptr) {
       try {
-         /*
-          * Create and init components
-          */
-         /*
-          * Embodied entity
-          * Better to put this first, because many other entities need this one
-          */
          m_pcEmbodiedEntity = new CEmbodiedEntity(this, "body_0", c_position, c_orientation);
          AddComponent(*m_pcEmbodiedEntity);
          SAnchor& cTurretAnchor = m_pcEmbodiedEntity->AddAnchor("turret");
-         // Eliminar la redeclaración de cPerspCamOrient y cPerspCamAnchor aquí
-         // CQuaternion cPerspCamOrient(b_perspcam_front ? CRadians::ZERO : -CRadians::PI_OVER_TWO,
-         //                             CVector3::Y);
-         // SAnchor& cPerspCamAnchor = m_pcEmbodiedEntity->AddAnchor("perspective_camera",
-         //                                                          CVector3(BODY_RADIUS, 0.0, BEACON_ELEVATION),
-         //                                                          cPerspCamOrient);
-         /* Wheeled entity and wheel positions (left, right) */
+
+         /* Wheels */
          m_pcWheeledEntity = new CWheeledEntity(this, "wheels_0", 2);
          AddComponent(*m_pcWheeledEntity);
          m_pcWheeledEntity->SetWheel(0, CVector3(0.0f,  HALF_INTERWHEEL_DISTANCE, 0.0f), WHEEL_RADIUS);
          m_pcWheeledEntity->SetWheel(1, CVector3(0.0f, -HALF_INTERWHEEL_DISTANCE, 0.0f), WHEEL_RADIUS);
-         /* LED equipped entity, with LEDs [0-5] and beacon [6] */
+
+         /* LEDs */
          m_pcLEDEquippedEntity = new CLEDEquippedEntity(this, "leds_0");
          AddComponent(*m_pcLEDEquippedEntity);
-         m_pcLEDEquippedEntity->AddLEDRing(
-            CVector3(0.0f, 0.0f, LED_RING_ELEVATION),
-            LED_RING_RADIUS,
-            HALF_LED_ANGLE_SLICE,
-            6,
-            cTurretAnchor);
-         m_pcLEDEquippedEntity->AddLED(
-            CVector3(0.0f, 0.0f, BEACON_ELEVATION),
-            cTurretAnchor);
-         /* Proximity sensor equipped entity */
-         m_pcProximitySensorEquippedEntity =
-            new CProximitySensorEquippedEntity(this, "proximity_0");
+         m_pcLEDEquippedEntity->AddLEDRing(CVector3(0.0f, 0.0f, LED_RING_ELEVATION), LED_RING_RADIUS, HALF_LED_ANGLE_SLICE, 6, cTurretAnchor);
+         m_pcLEDEquippedEntity->AddLED(CVector3(0.0f, 0.0f, BEACON_ELEVATION), cTurretAnchor);
+
+         /* Proximity Sensors (6 Sensores) */
+         m_pcProximitySensorEquippedEntity = new CProximitySensorEquippedEntity(this, "proximity_0");
          AddComponent(*m_pcProximitySensorEquippedEntity);
-         // INICIO CAMBIO CORREGIDO: Configura 6 sensores individuales en lugar del anillo de 24
          for(size_t i = 0; i < 6; ++i) {
              m_pcProximitySensorEquippedEntity->AddSensor(
                  CVector3(PROXIMITY_SENSOR_RING_RADIUS * Cos(QUPA_PROXIMITY_SENSOR_ANGLES[i]),
                           PROXIMITY_SENSOR_RING_RADIUS * Sin(QUPA_PROXIMITY_SENSOR_ANGLES[i]),
                           PROXIMITY_SENSOR_RING_ELEVATION),
-                 // CORRECTO: Pasa un CVector3 como dirección
                  CVector3(Cos(QUPA_PROXIMITY_SENSOR_ANGLES[i]),
                           Sin(QUPA_PROXIMITY_SENSOR_ANGLES[i]),
                           0.0f),
@@ -166,126 +141,47 @@ namespace argos {
                  m_pcEmbodiedEntity->GetOriginAnchor());
          }
          m_pcProximitySensorEquippedEntity->Enable();
-         // FIN CAMBIO CORREGIDO
-         /* Light sensor equipped entity */
-         m_pcLightSensorEquippedEntity =
-            new CLightSensorEquippedEntity(this, "light_0");
+
+         /* Light Sensors */
+         m_pcLightSensorEquippedEntity = new CLightSensorEquippedEntity(this, "light_0");
          AddComponent(*m_pcLightSensorEquippedEntity);
-         m_pcLightSensorEquippedEntity->AddSensorRing(
-            CVector3(0.0f, 0.0f, PROXIMITY_SENSOR_RING_ELEVATION),
-            PROXIMITY_SENSOR_RING_RADIUS,
-            PROXIMITY_SENSOR_RING_START_ANGLE,
-            PROXIMITY_SENSOR_RING_RANGE,
-            24, // Aquí podrías querer cambiar también los sensores de luz si solo quieres 6
-            m_pcEmbodiedEntity->GetOriginAnchor());
-         /* Gripper equipped entity */
-         m_pcGripperEquippedEntity =
-            new CGripperEquippedEntity(this,
-                                       "gripper_0",
-                                       CVector3(BODY_RADIUS, 0.0f, GRIPPER_ELEVATION),
-                                       CVector3::X);
+         m_pcLightSensorEquippedEntity->AddSensorRing(CVector3(0.0f, 0.0f, PROXIMITY_SENSOR_RING_ELEVATION), PROXIMITY_SENSOR_RING_RADIUS, PROXIMITY_SENSOR_RING_START_ANGLE, PROXIMITY_SENSOR_RING_RANGE, 24, m_pcEmbodiedEntity->GetOriginAnchor());
+
+         /* Gripper */
+         m_pcGripperEquippedEntity = new CGripperEquippedEntity(this, "gripper_0", CVector3(BODY_RADIUS, 0.0f, GRIPPER_ELEVATION), CVector3::X);
          AddComponent(*m_pcGripperEquippedEntity);
-         /* Ground sensor equipped entity */
-         m_pcGroundSensorEquippedEntity =
-            new CGroundSensorEquippedEntity(this, "ground_0");
+
+         /* AJUSTE 2: Sensor de suelo ÚNICO en el borde frontal (distancia = BODY_RADIUS) */
+         m_pcGroundSensorEquippedEntity = new CGroundSensorEquippedEntity(this, "ground_0");
          AddComponent(*m_pcGroundSensorEquippedEntity);
+         m_pcGroundSensorEquippedEntity->AddSensor(CVector2(BODY_RADIUS, 0.0f), CGroundSensorEquippedEntity::TYPE_GRAYSCALE, m_pcEmbodiedEntity->GetOriginAnchor());
 
-         // --- Sensores de Escala de Grises (4 en total) - Índices [0] a [3] ---
-         m_pcGroundSensorEquippedEntity->AddSensor(CVector2(0.063, 0.0116),
-                                                   CGroundSensorEquippedEntity::TYPE_GRAYSCALE,
-                                                   m_pcEmbodiedEntity->GetOriginAnchor());
-         m_pcGroundSensorEquippedEntity->AddSensor(CVector2(-0.063, 0.0116),
-                                                   CGroundSensorEquippedEntity::TYPE_GRAYSCALE,
-                                                   m_pcEmbodiedEntity->GetOriginAnchor());
-         m_pcGroundSensorEquippedEntity->AddSensor(CVector2(-0.063, -0.0116),
-                                                   CGroundSensorEquippedEntity::TYPE_GRAYSCALE,
-                                                   m_pcEmbodiedEntity->GetOriginAnchor());
-         m_pcGroundSensorEquippedEntity->AddSensor(CVector2(0.063, -0.0116),
-                                                   CGroundSensorEquippedEntity::TYPE_GRAYSCALE,
-                                                   m_pcEmbodiedEntity->GetOriginAnchor());
-
-         // --- Sensores de Blanco y Negro (8 en total) - Índices [4] a [11] ---
-         m_pcGroundSensorEquippedEntity->AddSensor(CVector2(0.08, 0.0),
-                                                   CGroundSensorEquippedEntity::TYPE_BLACK_WHITE,
-                                                   m_pcEmbodiedEntity->GetOriginAnchor());
-         m_pcGroundSensorEquippedEntity->AddSensor(CVector2(0.042, 0.065),
-                                                   CGroundSensorEquippedEntity::TYPE_BLACK_WHITE,
-                                                   m_pcEmbodiedEntity->GetOriginAnchor());
-         m_pcGroundSensorEquippedEntity->AddSensor(CVector2(0.0, 0.08),
-                                                   CGroundSensorEquippedEntity::TYPE_BLACK_WHITE,
-                                                   m_pcEmbodiedEntity->GetOriginAnchor());
-         m_pcGroundSensorEquippedEntity->AddSensor(CVector2(-0.042, 0.065),
-                                                   CGroundSensorEquippedEntity::TYPE_BLACK_WHITE,
-                                                   m_pcEmbodiedEntity->GetOriginAnchor());
-         m_pcGroundSensorEquippedEntity->AddSensor(CVector2(-0.08, 0.0),
-                                                   CGroundSensorEquippedEntity::TYPE_BLACK_WHITE,
-                                                   m_pcEmbodiedEntity->GetOriginAnchor());
-         m_pcGroundSensorEquippedEntity->AddSensor(CVector2(-0.042, -0.065),
-                                                   CGroundSensorEquippedEntity::TYPE_BLACK_WHITE,
-                                                   m_pcEmbodiedEntity->GetOriginAnchor());
-         m_pcGroundSensorEquippedEntity->AddSensor(CVector2(0.0, -0.08),
-                                                   CGroundSensorEquippedEntity::TYPE_BLACK_WHITE,
-                                                   m_pcEmbodiedEntity->GetOriginAnchor());
-         m_pcGroundSensorEquippedEntity->AddSensor(CVector2(0.042, -0.065),
-                                                   CGroundSensorEquippedEntity::TYPE_BLACK_WHITE,
-                                                   m_pcEmbodiedEntity->GetOriginAnchor());
-
-         // <<< NUEVO SENSOR AÑADIDO AL FINAL - Índice [12] --- SEnsor del QUPA
-         m_pcGroundSensorEquippedEntity->AddSensor(CVector2(0.063, 0.0),
-                                                   CGroundSensorEquippedEntity::TYPE_GRAYSCALE,
-                                                   m_pcEmbodiedEntity->GetOriginAnchor());
          /* Distance scanner */
-         m_pcDistanceScannerEquippedEntity =
-            new CQupaDistanceScannerEquippedEntity(this, "distance_scanner_0");
+         m_pcDistanceScannerEquippedEntity = new CQupaDistanceScannerEquippedEntity(this, "distance_scanner_0");
          AddComponent(*m_pcDistanceScannerEquippedEntity);
-         /* RAB equipped entity */
-         m_pcRABEquippedEntity =
-            new CRABEquippedEntity(this,
-                                   "rab_0",
-                                   un_rab_data_size,
-                                   f_rab_range,
-                                   m_pcEmbodiedEntity->GetOriginAnchor(),
-                                   *m_pcEmbodiedEntity,
-                                   CVector3(0.0f, 0.0f, RAB_ELEVATION));
+
+         /* RAB */
+         m_pcRABEquippedEntity = new CRABEquippedEntity(this, "rab_0", un_rab_data_size, f_rab_range, m_pcEmbodiedEntity->GetOriginAnchor(), *m_pcEmbodiedEntity, CVector3(0.0f, 0.0f, RAB_ELEVATION));
          AddComponent(*m_pcRABEquippedEntity);
-         /* Omnidirectional camera equipped entity */
-         m_pcOmnidirectionalCameraEquippedEntity =
-            new COmnidirectionalCameraEquippedEntity(this,
-                                                     "omnidirectional_camera",
-                                                     c_omnicam_aperture,
-                                                     CVector3(0.0f,
-                                                              0.0f,
-                                                              OMNIDIRECTIONAL_CAMERA_ELEVATION));
+
+         /* Camera */
+         m_pcOmnidirectionalCameraEquippedEntity = new COmnidirectionalCameraEquippedEntity(this, "omnidirectional_camera", c_omnicam_aperture, CVector3(0.0f, 0.0f, OMNIDIRECTIONAL_CAMERA_ELEVATION));
          AddComponent(*m_pcOmnidirectionalCameraEquippedEntity);
          m_pcOmnidirectionalCameraEquippedEntity->Enable();
-         /* Perspective camera equipped entity */
-         // Declarar cPerspCamOrient y cPerspCamAnchor aquí por primera vez
-         CQuaternion cPerspCamOrient(b_perspcam_front ? CRadians::ZERO : -CRadians::PI_OVER_TWO,
-                                     CVector3::Y);
-         SAnchor& cPerspCamAnchor = m_pcEmbodiedEntity->AddAnchor("perspective_camera",
-                                                                  CVector3(BODY_RADIUS, 0.0, BEACON_ELEVATION),
-                                                                  cPerspCamOrient);
-         m_pcPerspectiveCameraEquippedEntity =
-            new CPerspectiveCameraEquippedEntity(this,
-                                                 "perspective_camera_0",
-                                                 c_perspcam_aperture,
-                                                 f_perspcam_focal_length,
-                                                 f_perspcam_range,
-                                                 640, 480,
-                                                 cPerspCamAnchor);
+
+         CQuaternion cPerspCamOrient(b_perspcam_front ? CRadians::ZERO : -CRadians::PI_OVER_TWO, CVector3::Y);
+         SAnchor& cPerspCamAnchor = m_pcEmbodiedEntity->AddAnchor("perspective_camera", CVector3(BODY_RADIUS, 0.0, BEACON_ELEVATION), cPerspCamOrient);
+         m_pcPerspectiveCameraEquippedEntity = new CPerspectiveCameraEquippedEntity(this, "perspective_camera_0", c_perspcam_aperture, f_perspcam_focal_length, f_perspcam_range, 640, 480, cPerspCamAnchor);
          AddComponent(*m_pcPerspectiveCameraEquippedEntity);
-         /* Turret equipped entity */
+
+         /* Turret, Battery, and Controller */
          m_pcTurretEntity = new CQupaTurretEntity(this, "turret_0", cTurretAnchor);
          AddComponent(*m_pcTurretEntity);
-         /* Battery equipped entity */
          m_pcBatteryEquippedEntity = new CBatteryEquippedEntity(this, "battery_0", str_bat_model);
          AddComponent(*m_pcBatteryEquippedEntity);
-         /* Controllable entity
-            It must be the last one, for actuators/sensors to link to composing entities correctly */
          m_pcControllableEntity = new CControllableEntity(this, "controller");
          AddComponent(*m_pcControllableEntity);
          m_pcControllableEntity->SetController(str_controller_id);
-         /* Update components */
          UpdateComponents();
       }
       catch(CARGoSException& ex) {
@@ -293,157 +189,67 @@ namespace argos {
       }
    }
 
-   /****************************************/
-   /****************************************/
-
    void CQupaEntity::Init(TConfigurationNode& t_tree) {
       try {
-         /*
-          * Init parent
-          */
          CComposableEntity::Init(t_tree);
-         /*
-          * Create and init components
-          */
-         /*
-          * Embodied entity
-          * Better to put this first, because many other entities need this one
-          */
          m_pcEmbodiedEntity = new CEmbodiedEntity(this);
          AddComponent(*m_pcEmbodiedEntity);
          m_pcEmbodiedEntity->Init(GetNode(t_tree, "body"));
          SAnchor& cTurretAnchor = m_pcEmbodiedEntity->AddAnchor("turret");
-         /* Wheeled entity and wheel positions (left, right) */
+
          m_pcWheeledEntity = new CWheeledEntity(this, "wheels_0", 2);
          AddComponent(*m_pcWheeledEntity);
          m_pcWheeledEntity->SetWheel(0, CVector3(0.0f,  HALF_INTERWHEEL_DISTANCE, 0.0f), WHEEL_RADIUS);
          m_pcWheeledEntity->SetWheel(1, CVector3(0.0f, -HALF_INTERWHEEL_DISTANCE, 0.0f), WHEEL_RADIUS);
-         /* LED equipped entity, with LEDs [0-5] and beacon [6] */
+
          m_pcLEDEquippedEntity = new CLEDEquippedEntity(this, "leds_0");
          AddComponent(*m_pcLEDEquippedEntity);
-         m_pcLEDEquippedEntity->AddLEDRing(
-            CVector3(0.0f, 0.0f, LED_RING_ELEVATION),
-            LED_RING_RADIUS,
-            HALF_LED_ANGLE_SLICE,
-            6,
-            cTurretAnchor);
-         m_pcLEDEquippedEntity->AddLED(
-            CVector3(0.0f, 0.0f, BEACON_ELEVATION),
-            cTurretAnchor);
-         /* Proximity sensor equipped entity */
-         m_pcProximitySensorEquippedEntity =
-            new CProximitySensorEquippedEntity(this, "proximity_0");
+         m_pcLEDEquippedEntity->AddLEDRing(CVector3(0.0f, 0.0f, LED_RING_ELEVATION), LED_RING_RADIUS, HALF_LED_ANGLE_SLICE, 6, cTurretAnchor);
+         m_pcLEDEquippedEntity->AddLED(CVector3(0.0f, 0.0f, BEACON_ELEVATION), cTurretAnchor);
+
+         /* Proximity (6 Sensores) */
+         m_pcProximitySensorEquippedEntity = new CProximitySensorEquippedEntity(this, "proximity_0");
          AddComponent(*m_pcProximitySensorEquippedEntity);
-         // INICIO CAMBIO CORREGIDO: Configura 6 sensores individuales en lugar del anillo de 24
-         // Primero, verifica si hay una configuración de proximidad explícita en el XML
-         // Si la hay, la clase CProximitySensorEquippedEntity la manejará.
-         // Si no, agregaremos nuestros 6 sensores por defecto.
          if(NodeExists(t_tree, "proximity")) {
              m_pcProximitySensorEquippedEntity->Init(GetNode(t_tree, "proximity"));
          } else {
              for(size_t i = 0; i < 6; ++i) {
                  m_pcProximitySensorEquippedEntity->AddSensor(
-                     CVector3(PROXIMITY_SENSOR_RING_RADIUS * Cos(QUPA_PROXIMITY_SENSOR_ANGLES[i]),
-                              PROXIMITY_SENSOR_RING_RADIUS * Sin(QUPA_PROXIMITY_SENSOR_ANGLES[i]),
-                              PROXIMITY_SENSOR_RING_ELEVATION),
-                     // CORRECTO: Pasa un CVector3 como dirección
-                     CVector3(Cos(QUPA_PROXIMITY_SENSOR_ANGLES[i]),
-                              Sin(QUPA_PROXIMITY_SENSOR_ANGLES[i]),
-                              0.0f),
+                     CVector3(PROXIMITY_SENSOR_RING_RADIUS * Cos(QUPA_PROXIMITY_SENSOR_ANGLES[i]), PROXIMITY_SENSOR_RING_RADIUS * Sin(QUPA_PROXIMITY_SENSOR_ANGLES[i]), PROXIMITY_SENSOR_RING_ELEVATION),
+                     CVector3(Cos(QUPA_PROXIMITY_SENSOR_ANGLES[i]), Sin(QUPA_PROXIMITY_SENSOR_ANGLES[i]), 0.0f),
                      PROXIMITY_SENSOR_RING_RANGE,
                      m_pcEmbodiedEntity->GetOriginAnchor());
              }
          }
          m_pcProximitySensorEquippedEntity->Enable();
-         // FIN CAMBIO CORREGIDO
-         /* Light sensor equipped entity */
-         m_pcLightSensorEquippedEntity =
-            new CLightSensorEquippedEntity(this, "light_0");
+
+         m_pcLightSensorEquippedEntity = new CLightSensorEquippedEntity(this, "light_0");
          AddComponent(*m_pcLightSensorEquippedEntity);
-         m_pcLightSensorEquippedEntity->AddSensorRing(
-            CVector3(0.0f, 0.0f, PROXIMITY_SENSOR_RING_ELEVATION),
-            PROXIMITY_SENSOR_RING_RADIUS,
-            PROXIMITY_SENSOR_RING_START_ANGLE,
-            PROXIMITY_SENSOR_RING_RANGE,
-            24, // Aquí podrías querer cambiar también los sensores de luz si solo quieres 6
-            m_pcEmbodiedEntity->GetOriginAnchor());
-         /* Gripper equipped entity */
-         m_pcGripperEquippedEntity =
-            new CGripperEquippedEntity(this,
-                                       "gripper_0",
-                                       CVector3(BODY_RADIUS, 0.0f, GRIPPER_ELEVATION),
-                                       CVector3::X);
+         m_pcLightSensorEquippedEntity->AddSensorRing(CVector3(0.0f, 0.0f, PROXIMITY_SENSOR_RING_ELEVATION), PROXIMITY_SENSOR_RING_RADIUS, PROXIMITY_SENSOR_RING_START_ANGLE, PROXIMITY_SENSOR_RING_RANGE, 24, m_pcEmbodiedEntity->GetOriginAnchor());
+
+         m_pcGripperEquippedEntity = new CGripperEquippedEntity(this, "gripper_0", CVector3(BODY_RADIUS, 0.0f, GRIPPER_ELEVATION), CVector3::X);
          AddComponent(*m_pcGripperEquippedEntity);
-         /* Ground sensor equipped entity */
-         m_pcGroundSensorEquippedEntity =
-            new CGroundSensorEquippedEntity(this, "ground_0");
+
+         /* AJUSTE 2: Único sensor de suelo en el frente */
+         m_pcGroundSensorEquippedEntity = new CGroundSensorEquippedEntity(this, "ground_0");
          AddComponent(*m_pcGroundSensorEquippedEntity);
-         m_pcGroundSensorEquippedEntity->AddSensor(CVector2(0.063, 0.0116),
-                                                   CGroundSensorEquippedEntity::TYPE_GRAYSCALE,
-                                                   m_pcEmbodiedEntity->GetOriginAnchor());
-         m_pcGroundSensorEquippedEntity->AddSensor(CVector2(-0.063, 0.0116),
-                                                   CGroundSensorEquippedEntity::TYPE_GRAYSCALE,
-                                                   m_pcEmbodiedEntity->GetOriginAnchor());
-         m_pcGroundSensorEquippedEntity->AddSensor(CVector2(-0.063, -0.0116),
-                                                   CGroundSensorEquippedEntity::TYPE_GRAYSCALE,
-                                                   m_pcEmbodiedEntity->GetOriginAnchor());
-         m_pcGroundSensorEquippedEntity->AddSensor(CVector2(0.063, -0.0116),
-                                                   CGroundSensorEquippedEntity::TYPE_GRAYSCALE,
-                                                   m_pcEmbodiedEntity->GetOriginAnchor());
-         m_pcGroundSensorEquippedEntity->AddSensor(CVector2(0.08, 0.0),
-                                                   CGroundSensorEquippedEntity::TYPE_BLACK_WHITE,
-                                                   m_pcEmbodiedEntity->GetOriginAnchor());
-         m_pcGroundSensorEquippedEntity->AddSensor(CVector2(0.042, 0.065),
-                                                   CGroundSensorEquippedEntity::TYPE_BLACK_WHITE,
-                                                   m_pcEmbodiedEntity->GetOriginAnchor());
-         m_pcGroundSensorEquippedEntity->AddSensor(CVector2(0.0, 0.08),
-                                                   CGroundSensorEquippedEntity::TYPE_BLACK_WHITE,
-                                                   m_pcEmbodiedEntity->GetOriginAnchor());
-         m_pcGroundSensorEquippedEntity->AddSensor(CVector2(-0.042, 0.065),
-                                                   CGroundSensorEquippedEntity::TYPE_BLACK_WHITE,
-                                                   m_pcEmbodiedEntity->GetOriginAnchor());
-         m_pcGroundSensorEquippedEntity->AddSensor(CVector2(-0.08, 0.0),
-                                                   CGroundSensorEquippedEntity::TYPE_BLACK_WHITE,
-                                                   m_pcEmbodiedEntity->GetOriginAnchor());
-         m_pcGroundSensorEquippedEntity->AddSensor(CVector2(-0.042, -0.065),
-                                                   CGroundSensorEquippedEntity::TYPE_BLACK_WHITE,
-                                                   m_pcEmbodiedEntity->GetOriginAnchor());
-         m_pcGroundSensorEquippedEntity->AddSensor(CVector2(0.0, -0.08),
-                                                   CGroundSensorEquippedEntity::TYPE_BLACK_WHITE,
-                                                   m_pcEmbodiedEntity->GetOriginAnchor());
-         m_pcGroundSensorEquippedEntity->AddSensor(CVector2(0.042, -0.065),
-                                                   CGroundSensorEquippedEntity::TYPE_BLACK_WHITE,
-                                                   m_pcEmbodiedEntity->GetOriginAnchor());
-         /* Distance scanner */
-         m_pcDistanceScannerEquippedEntity =
-            new CQupaDistanceScannerEquippedEntity(this, "distance_scanner_0");
+         m_pcGroundSensorEquippedEntity->AddSensor(CVector2(BODY_RADIUS, 0.0f), CGroundSensorEquippedEntity::TYPE_GRAYSCALE, m_pcEmbodiedEntity->GetOriginAnchor());
+
+         m_pcDistanceScannerEquippedEntity = new CQupaDistanceScannerEquippedEntity(this, "distance_scanner_0");
          AddComponent(*m_pcDistanceScannerEquippedEntity);
-         /* RAB equipped entity */
+
          Real fRange = 3.0f;
          GetNodeAttributeOrDefault(t_tree, "rab_range", fRange, fRange);
          UInt32 unDataSize = 10;
          GetNodeAttributeOrDefault(t_tree, "rab_data_size", unDataSize, unDataSize);
-         m_pcRABEquippedEntity =
-            new CRABEquippedEntity(this,
-                                   "rab_0",
-                                   unDataSize,
-                                   fRange,
-                                   m_pcEmbodiedEntity->GetOriginAnchor(),
-                                   *m_pcEmbodiedEntity,
-                                   CVector3(0.0f, 0.0f, RAB_ELEVATION));
+         m_pcRABEquippedEntity = new CRABEquippedEntity(this, "rab_0", unDataSize, fRange, m_pcEmbodiedEntity->GetOriginAnchor(), *m_pcEmbodiedEntity, CVector3(0.0f, 0.0f, RAB_ELEVATION));
          AddComponent(*m_pcRABEquippedEntity);
-         /* Omnidirectional camera equipped entity */
+
          CDegrees cAperture(70.0f);
          GetNodeAttributeOrDefault(t_tree, "omnidirectional_camera_aperture", cAperture, cAperture);
-         m_pcOmnidirectionalCameraEquippedEntity =
-            new COmnidirectionalCameraEquippedEntity(this,
-                                                     "omnidirectional_camera",
-                                                     ToRadians(cAperture),
-                                                     CVector3(0.0f,
-                                                              0.0f,
-                                                              OMNIDIRECTIONAL_CAMERA_ELEVATION));
+         m_pcOmnidirectionalCameraEquippedEntity = new COmnidirectionalCameraEquippedEntity(this, "omnidirectional_camera", ToRadians(cAperture), CVector3(0.0f, 0.0f, OMNIDIRECTIONAL_CAMERA_ELEVATION));
          AddComponent(*m_pcOmnidirectionalCameraEquippedEntity);
-         /* Perspective camera equipped entity */
+
          bool bPerspCamFront = true;
          GetNodeAttributeOrDefault(t_tree, "perspective_camera_front", bPerspCamFront, bPerspCamFront);
          Real fPerspCamFocalLength = 0.035;
@@ -452,34 +258,20 @@ namespace argos {
          GetNodeAttributeOrDefault(t_tree, "perspective_camera_range", fPerspCamRange, fPerspCamRange);
          cAperture.SetValue(30.0f);
          GetNodeAttributeOrDefault(t_tree, "perspective_camera_aperture", cAperture, cAperture);
-         CQuaternion cPerspCamOrient(bPerspCamFront ? CRadians::ZERO : -CRadians::PI_OVER_TWO,
-                                     CVector3::Y);
-         SAnchor& cPerspCamAnchor = m_pcEmbodiedEntity->AddAnchor("perspective_camera",
-                                                                  CVector3(BODY_RADIUS, 0.0, BEACON_ELEVATION),
-                                                                  cPerspCamOrient);
-         m_pcPerspectiveCameraEquippedEntity =
-            new CPerspectiveCameraEquippedEntity(this,
-                                                 "perspective_camera_0",
-                                                 ToRadians(cAperture),
-                                                 fPerspCamFocalLength,
-                                                 fPerspCamRange,
-                                                 640, 480,
-                                                 cPerspCamAnchor);
+         CQuaternion cPerspCamOrient(bPerspCamFront ? CRadians::ZERO : -CRadians::PI_OVER_TWO, CVector3::Y);
+         SAnchor& cPerspCamAnchor = m_pcEmbodiedEntity->AddAnchor("perspective_camera", CVector3(BODY_RADIUS, 0.0, BEACON_ELEVATION), cPerspCamOrient);
+         m_pcPerspectiveCameraEquippedEntity = new CPerspectiveCameraEquippedEntity(this, "perspective_camera_0", ToRadians(cAperture), fPerspCamFocalLength, fPerspCamRange, 640, 480, cPerspCamAnchor);
          AddComponent(*m_pcPerspectiveCameraEquippedEntity);
-         /* Turret equipped entity */
+
          m_pcTurretEntity = new CQupaTurretEntity(this, "turret_0", cTurretAnchor);
          AddComponent(*m_pcTurretEntity);
-         /* Battery equipped entity */
          m_pcBatteryEquippedEntity = new CBatteryEquippedEntity(this, "battery_0");
-         if(NodeExists(t_tree, "battery"))
-            m_pcBatteryEquippedEntity->Init(GetNode(t_tree, "battery"));
+         if(NodeExists(t_tree, "battery")) m_pcBatteryEquippedEntity->Init(GetNode(t_tree, "battery"));
          AddComponent(*m_pcBatteryEquippedEntity);
-         /* Controllable entity
-            It must be the last one, for actuators/sensors to link to composing entities correctly */
+
          m_pcControllableEntity = new CControllableEntity(this);
          AddComponent(*m_pcControllableEntity);
          m_pcControllableEntity->Init(GetNode(t_tree, "controller"));
-         /* Update components */
          UpdateComponents();
       }
       catch(CARGoSException& ex) {
@@ -487,20 +279,12 @@ namespace argos {
       }
    }
 
-   /****************************************/
-   /****************************************/
-
    void CQupaEntity::Reset() {
-      /* Reset all components */
       CComposableEntity::Reset();
-      /* Update components */
       UpdateComponents();
    }
 
-   /****************************************/
-   /****************************************/
-
-#define UPDATE(COMPONENT) if(COMPONENT->IsEnabled()) COMPONENT->Update();
+#define UPDATE(COMPONENT) if(COMPONENT && COMPONENT->IsEnabled()) COMPONENT->Update();
 
    void CQupaEntity::UpdateComponents() {
      UPDATE(m_pcDistanceScannerEquippedEntity);
@@ -509,8 +293,6 @@ namespace argos {
      UPDATE(m_pcRABEquippedEntity);
      UPDATE(m_pcLEDEquippedEntity);
      UPDATE(m_pcBatteryEquippedEntity);
-
-     // FALTABAN ESTAS:
      UPDATE(m_pcProximitySensorEquippedEntity);
      UPDATE(m_pcLightSensorEquippedEntity);
      UPDATE(m_pcGroundSensorEquippedEntity);

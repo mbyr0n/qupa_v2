@@ -13,7 +13,7 @@
         <leds implementation="default" medium="leds" />
       </actuators>
       <sensors>
-        <qupa_proximity implementation="default" />
+        <qupa_proximity implementation="default" show_rays="true" />
       </sensors>
       <params/>
     </lua_controller>

@@ -1,6 +1,6 @@
 -- avoid_scaled.lua
-local FWD      = 10.0      -- velocidad base
-local MAX_SPD  = 15.0
+local FWD      = 20.0      -- velocidad base
+local MAX_SPD  = 20.0
 local PROX_THR = 0.02      -- umbral más bajo (antes 0.15/0.2)
 local PROX_GAIN= 25.0      -- cuánto giro por lectura
 
