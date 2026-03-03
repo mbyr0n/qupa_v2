@@ -16,9 +16,8 @@ namespace argos {
    static const Real PD_P_CONSTANT = 0.4;
    static const Real PD_D_CONSTANT = 0.2;
 
-   /* EL CULPABLE: El radio debe ser 0.15f para que el disco físico 
-      coincida con el visual de 15cm de radio */
-   static const Real QUPA_RADIUS                   = 0.15f; 
+   /* El radio debe ser 0.07f porque el qupa tien de dimatreo 14 cm */
+   static const Real QUPA_RADIUS                   = 0.07f; 
    static const Real QUPA_INTERWHEEL_DISTANCE      = 0.14f;
    static const Real QUPA_HEIGHT                   = 0.146899733f;
 

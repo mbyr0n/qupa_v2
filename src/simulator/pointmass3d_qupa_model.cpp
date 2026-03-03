@@ -10,9 +10,9 @@
 
 namespace argos {
 
-   static const Real QUPA_RADIUS                   = 0.085036758f;
+   static const Real QUPA_RADIUS                   = 0.07f;
    static const Real QUPA_INTERWHEEL_DISTANCE      = 0.14f;
-   static const Real QUPA_HEIGHT                   = 0.146899733f;
+   static const Real QUPA_HEIGHT                   = 0.15f;
 
    enum QUPA_WHEELS {
       QUPA_LEFT_WHEEL = 0,

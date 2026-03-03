@@ -28,7 +28,7 @@ CQTOpenGLQupa::CQTOpenGLQupa() {
     // 1.0f = tamaño original (100%)
     // 0.9f = 90% del tamaño original
     // 1.5f = 150% del tamaño original
-    m_fScale = 0.5f;
+    m_fScale = 0.23f;
 
     // Creamos la display list para el cuerpo del robot
     m_unBodyList = glGenLists(1);

@@ -28,32 +28,32 @@ namespace argos {
    /****************************************/
    /****************************************/
 
-   static const Real BODY_RADIUS                = 0.15f;
-   static const Real BODY_HEIGHT                = 0.9f;
+   static const Real BODY_RADIUS                = 0.07f;
+   static const Real BODY_HEIGHT                = 0.146f;
 
-   static const Real LED_RING_RADIUS            = BODY_RADIUS - 0.03;
+   static const Real LED_RING_RADIUS            = BODY_RADIUS - 0.02f;
 
-   static const Real INTERWHEEL_DISTANCE        = 0.15f;
+   static const Real INTERWHEEL_DISTANCE        = 0.14f;
    static const Real HALF_INTERWHEEL_DISTANCE   = INTERWHEEL_DISTANCE * 0.5f;
    static const Real WHEEL_RADIUS               = 0.029112741f;
 
-   static const Real PROXIMITY_SENSOR_RING_ELEVATION       = 0.07f;
+   static const Real PROXIMITY_SENSOR_RING_ELEVATION       = 0.04f;
    static const Real PROXIMITY_SENSOR_RING_RADIUS          = BODY_RADIUS;
    static const CRadians PROXIMITY_SENSOR_RING_START_ANGLE = CRadians((ARGOS_PI / 12.0f) * 0.5f);
    
    /* AJUSTE 1: Rango de los rayos de proximidad extendido a 50cm */
    static const Real PROXIMITY_SENSOR_RING_RANGE           = 0.5f; 
 
-   static const Real LED_RING_ELEVATION         = 0.22f;
-   static const Real RAB_ELEVATION              = 0.1f;
-   static const Real BEACON_ELEVATION           = 0.174249733f;
+   static const Real LED_RING_ELEVATION         = 0.10f;
+   static const Real RAB_ELEVATION              = 0.08f;
+   static const Real BEACON_ELEVATION           = 0.13f;
 
    static const Real GRIPPER_ELEVATION          = LED_RING_ELEVATION;
 
    static const CRadians LED_ANGLE_SLICE        = CRadians(ARGOS_PI / 6.0);
    static const CRadians HALF_LED_ANGLE_SLICE   = LED_ANGLE_SLICE * 0.5f;
 
-   static const Real OMNIDIRECTIONAL_CAMERA_ELEVATION = 0.5f;
+   static const Real OMNIDIRECTIONAL_CAMERA_ELEVATION = 0.233f;
 
    /* Ángulos de los 6 sensores de proximidad (ajustados para cubrir el frente y laterales) */
    static const CRadians QUPA_PROXIMITY_SENSOR_ANGLES[6] = {
