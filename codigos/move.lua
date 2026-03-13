@@ -1,7 +1,7 @@
 -- qupa_avoid.lua
 local BASE_SPEED = 10.0     -- velocidad base (cm/s aprox)
 local TURN_GAIN  = 8.0     -- cuanto gira ante obstáculo
-local THRESHOLD  = 0.05    -- umbral de "hay algo cerca"
+local THRESHOLD  = 0.1    -- umbral de "hay algo cerca"
 
 -- helpers: presencia de APIs según el robot
 local has_wheels = (robot.wheels and robot.wheels.set_velocity)
@@ -40,7 +40,7 @@ function step()
   if has_wheels then
     -- clamp suave (por si acaso)
     local function clamp(x, a, b) if x < a then return a elseif x > b then return b else return x end end
-    vL = clamp(vL, -15, 15); vR = clamp(vR, -15, 15)
+    vL = clamp(vL, -8, 8); vR = clamp(vR, -8, 8)
     robot.wheels.set_velocity(vL, vR)
   end
 end

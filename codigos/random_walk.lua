@@ -1,7 +1,7 @@
 -- avoid_scaled.lua
 local FWD      = 8.0      -- velocidad base
 local MAX_SPD  = 8.0
-local PROX_THR = 0.04      -- umbral más bajo (antes 0.15/0.2)
+local PROX_THR = 0.1      -- umbral más bajo (antes 0.15/0.2)
 local PROX_GAIN= 25.0      -- cuánto giro por lectura
 
 local has_wheels = robot.wheels and robot.wheels.set_velocity

@@ -23,18 +23,17 @@ namespace argos {
 
       virtual Real CalculateReading(Real f_distance) {
          /* Saturación a los 4cm (0.04m) según el sensor real */
-         if(f_distance <= 0.04) {
+         if(f_distance <= 0.1) {
             return 1.0;
          }
          /* Corte a los 50cm (0.50m) */
-         else if(f_distance >= 0.50) {
+         else if(f_distance >= 0.20) {
             return 0.0;
          }
-         /* Curva de respuesta ajustada para el rango 4cm - 50cm 
-            Usamos una función que entregue ~0.05 
-            cuando el objeto está a 50cm. */
+         /* Mapeo Lineal Suave: 
+         Garantiza que a 4cm sea 1.0 y a 50cm sea 0.0 sin saltos. */
          else {
-            return 0.025 / (f_distance + 0.015);
+            return (0.20-f_distance) / (0.20-0.1);
          }
       }
 
@@ -79,13 +78,18 @@ namespace argos {
    /****************************************/
 
    void CQupaProximityDefaultSensor::Update() {
-      if(IsDisabled()) return;  // <-- añadido
+      if(IsDisabled()) return;
       m_pcProximityImpl->Update();
-      // CAMBIA EL LÍMITE DEL BUCLE para que coincida con el nuevo tamaño
-      for(size_t i = 0; i < m_tReadings.size(); ++i) {
-         m_tReadings[i].Value = m_pcProximityImpl->GetReadings()[i];
+      // Obtengo las lecturas del sensor de proximidad y las guardo en m_tReadings
+      const std::vector<Real>& tImplReadings = m_pcProximityImpl->GetReadings();
+      if(m_tReadings.size() != tImplReadings.size()) {
+         m_tReadings.resize(tImplReadings.size());
       }
-   }
+
+      for(size_t i = 0; i < m_tReadings.size(); ++i) {
+         m_tReadings[i].Value = tImplReadings[i];
+      }
+   }  
 
    /****************************************/
    /****************************************/

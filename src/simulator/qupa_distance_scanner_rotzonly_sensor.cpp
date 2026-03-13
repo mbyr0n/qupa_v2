@@ -16,7 +16,7 @@ namespace argos {
    /****************************************/
    /****************************************/
 
-   static const Real QUPA_RADIUS           = 0.085036758f;
+   static const Real QUPA_RADIUS           = 0.07f;
 
    static const Real SHORT_RANGE_MIN_DISTANCE = 0.0f;
    static const Real SHORT_RANGE_RAY_START    = QUPA_RADIUS;
