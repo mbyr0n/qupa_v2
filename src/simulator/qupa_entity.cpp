@@ -31,7 +31,7 @@ namespace argos {
    static const Real BODY_RADIUS                = 0.07f;
    static const Real BODY_HEIGHT                = 0.146f;
 
-   static const Real LED_RING_RADIUS            = BODY_RADIUS - 0.02f;
+   static const Real LED_RING_RADIUS            = BODY_RADIUS - 0.03f;
 
    static const Real INTERWHEEL_DISTANCE        = 0.14f;
    static const Real HALF_INTERWHEEL_DISTANCE   = INTERWHEEL_DISTANCE * 0.5f;
@@ -53,7 +53,7 @@ namespace argos {
    static const CRadians LED_ANGLE_SLICE        = CRadians(ARGOS_PI / 6.0);
    static const CRadians HALF_LED_ANGLE_SLICE   = LED_ANGLE_SLICE * 0.5f;
 
-   static const Real OMNIDIRECTIONAL_CAMERA_ELEVATION = 0.233f;
+   static const Real OMNIDIRECTIONAL_CAMERA_ELEVATION = 0.22f;
 
    /* Ángulos de los 6 sensores de proximidad (ajustados para cubrir el frente y laterales) */
    static const CRadians QUPA_PROXIMITY_SENSOR_ANGLES[6] = {
@@ -123,8 +123,9 @@ namespace argos {
          /* LEDs */
          m_pcLEDEquippedEntity = new CLEDEquippedEntity(this, "leds_0");
          AddComponent(*m_pcLEDEquippedEntity);
-         m_pcLEDEquippedEntity->AddLEDRing(CVector3(0.0f, 0.0f, LED_RING_ELEVATION), LED_RING_RADIUS, HALF_LED_ANGLE_SLICE, 6, cTurretAnchor);
-         m_pcLEDEquippedEntity->AddLED(CVector3(0.0f, 0.0f, BEACON_ELEVATION), cTurretAnchor);
+         m_pcLEDEquippedEntity->AddLEDRing(CVector3(0.0f, 0.0f, LED_RING_ELEVATION), LED_RING_RADIUS, CRadians::ZERO, 35, cTurretAnchor);
+         //m_pcLEDEquippedEntity->AddLEDRing(CVector3(0.0f, 0.0f, LED_RING_ELEVATION), LED_RING_RADIUS, HALF_LED_ANGLE_SLICE, 6, cTurretAnchor);
+         //m_pcLEDEquippedEntity->AddLED(CVector3(0.0f, 0.0f, BEACON_ELEVATION), cTurretAnchor);
 
          /* Proximity Sensors (6 Sensores) */
          m_pcProximitySensorEquippedEntity = new CProximitySensorEquippedEntity(this, "proximity_0");
@@ -204,8 +205,9 @@ namespace argos {
 
          m_pcLEDEquippedEntity = new CLEDEquippedEntity(this, "leds_0");
          AddComponent(*m_pcLEDEquippedEntity);
-         m_pcLEDEquippedEntity->AddLEDRing(CVector3(0.0f, 0.0f, LED_RING_ELEVATION), LED_RING_RADIUS, HALF_LED_ANGLE_SLICE, 6, cTurretAnchor);
-         m_pcLEDEquippedEntity->AddLED(CVector3(0.0f, 0.0f, BEACON_ELEVATION), cTurretAnchor);
+         m_pcLEDEquippedEntity->AddLEDRing(CVector3(0.0f, 0.0f, LED_RING_ELEVATION), LED_RING_RADIUS, CRadians::ZERO, 35, cTurretAnchor);
+         //m_pcLEDEquippedEntity->AddLEDRing(CVector3(0.0f, 0.0f, LED_RING_ELEVATION), LED_RING_RADIUS, HALF_LED_ANGLE_SLICE, 6, cTurretAnchor);
+         //m_pcLEDEquippedEntity->AddLED(CVector3(0.0f, 0.0f, BEACON_ELEVATION), cTurretAnchor);
 
          /* Proximity (6 Sensores) */
          m_pcProximitySensorEquippedEntity = new CProximitySensorEquippedEntity(this, "proximity_0");
@@ -230,7 +232,7 @@ namespace argos {
          m_pcGripperEquippedEntity = new CGripperEquippedEntity(this, "gripper_0", CVector3(BODY_RADIUS, 0.0f, GRIPPER_ELEVATION), CVector3::X);
          AddComponent(*m_pcGripperEquippedEntity);
 
-         /* AJUSTE 2: Único sensor de suelo en el frente */
+         /* Único sensor de suelo en el frente */
          m_pcGroundSensorEquippedEntity = new CGroundSensorEquippedEntity(this, "ground_0");
          AddComponent(*m_pcGroundSensorEquippedEntity);
          m_pcGroundSensorEquippedEntity->AddSensor(CVector2(BODY_RADIUS, 0.0f), CGroundSensorEquippedEntity::TYPE_GRAYSCALE, m_pcEmbodiedEntity->GetOriginAnchor());
