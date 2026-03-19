@@ -15,7 +15,7 @@
       <sensors>
         <qupa_proximity implementation="default" />
         <!-- cámara de blobs  -->
-        <colored_blob_omnidirectional_camera implementation="rot_z_only" medium="leds" show_rays="true" />
+        <colored_blob_omnidirectional_camera implementation="rot_z_only" medium="leds" show_rays="false" />
       </sensors>
         <media>
           <led id="leds" index="grid" grid_size="1,1,1"/> <!-- opcional: grid más fino -->
