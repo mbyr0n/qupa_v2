@@ -54,15 +54,15 @@ namespace argos {
    static const CRadians LED_ANGLE_SLICE        = CRadians(ARGOS_PI / 6.0);
    static const CRadians HALF_LED_ANGLE_SLICE   = LED_ANGLE_SLICE * 0.5f;
 
-   static const Real OMNIDIRECTIONAL_CAMERA_ELEVATION = 0.23f;
+   static const Real OMNIDIRECTIONAL_CAMERA_ELEVATION = 0.245f;
 
    //  ángulos de los 6 sensores de proximidad
    static const CRadians QUPA_PROXIMITY_SENSOR_ANGLES[6] = {
         CRadians(0.0f),           // Sensor 1: 0° (frontal)
-        CRadians(-ARGOS_PI / 4),   // Sensor 2: 45°
-        CRadians(ARGOS_PI / 4),   // Sensor 2: 45°
-        CRadians(-ARGOS_PI / 2),   // Sensor 3: 90° (lateral derecho)
-        CRadians(ARGOS_PI / 2),   // Sensor 3: 90° (lateral derecho)
+        CRadians(-ARGOS_PI / 4.0f),   // Sensor 2: 45°
+        CRadians(ARGOS_PI / 4.0f),   // Sensor 2: 45°
+        CRadians(-ARGOS_PI / 2.0f),   // Sensor 3: 90° (lateral derecho)
+        CRadians(ARGOS_PI / 2.0f),   // Sensor 3: 90° (lateral derecho)
         CRadians(ARGOS_PI),       // Sensor 5: 180° (trasero)
 
    };
@@ -435,7 +435,7 @@ namespace argos {
                                    CVector3(0.0f, 0.0f, RAB_ELEVATION));
          AddComponent(*m_pcRABEquippedEntity);
          /* Omnidirectional camera equipped entity */
-         CDegrees cAperture(70.0f);
+         CDegrees cAperture(80.0f);
          GetNodeAttributeOrDefault(t_tree, "omnidirectional_camera_aperture", cAperture, cAperture);
          m_pcOmnidirectionalCameraEquippedEntity =
             new COmnidirectionalCameraEquippedEntity(this,

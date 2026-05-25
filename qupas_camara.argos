@@ -36,7 +36,7 @@
       <position method="uniform" min="-1,-1,0" max="1,1,0" />
       <orientation method="uniform" min="0,0,0" max="360,0,0" />
       <entity quantity="3" max_trials="100">
-        <qupa id="q" omnidirectional_camera_aperture="90">
+        <qupa id="q" omnidirectional_camera_aperture="84">
           <controller config="lua" />
         </qupa>
       </entity>

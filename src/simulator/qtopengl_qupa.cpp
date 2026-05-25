@@ -39,9 +39,10 @@ CQTOpenGLQupa::CQTOpenGLQupa() {
     // Creamos la display list para una esfera de LED
     m_unLEDList = glGenLists(1);
     glNewList(m_unLEDList, GL_COMPILE);
-    // Dibuja una esfera de radio 0.02
+    // Dibuja una esfera de radio x recomendao 0.00x-0.02f para los LEDs
+    // la resolucion viene dada por los ultimos dos parametros (slices y stacks), 10 es un valor razonable para una esfera pequeña
     GLUquadric* pcQuadric = gluNewQuadric();
-    gluSphere(pcQuadric, 0.02, 10, 10);
+    gluSphere(pcQuadric, 0.015f, 32, 32);
     gluDeleteQuadric(pcQuadric);
     glEndList();
 }
@@ -114,7 +115,7 @@ void CQTOpenGLQupa::Render() {
     glScalef(m_fScale, m_fScale, m_fScale);
 
     // 2. TRASLADAR: Mueve el objeto ya escalado a su posición de ajuste vertical.
-    glTranslatef(0.0f, 0.0f, 0.3f);
+    glTranslatef(-0.01f, -0.005f, 0.3f);
 
 
     // --- CÓDIGO DE DIBUJADO (SIN CAMBIOS) ---
