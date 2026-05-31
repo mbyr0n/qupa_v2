@@ -50,7 +50,6 @@ To know where argos3 was installed and your own rute put in your terminal the ne
 ```
 which argos3 
 ```
-
 the next command line is an example for other location.
 ```
 cmake -DCMAKE_BUILD_TYPE=Release \
@@ -61,10 +60,16 @@ cmake -DCMAKE_BUILD_TYPE=Release \
 make -j"$(nproc)"
 make install
 ```
+
 ### 3. Test the argos QUPA robot 
 
 ```
-argos3 -c test_qupa.argos
+argos3 -c arenas/test_qupa.argos
 ```
-![QUPA ROBOT](/arenas/images/qupas_argops3.png)
-![QUPA SENSORS BLOBS](/arenas/images/bloobs_leds.png)
+<!--![QUPA ROBOT](/arenas/images/qupas_argops3.png) 
+![QUPA SENSORS BLOBS](/arenas/images/bloobs_leds.png) -->
+
+### 4. Media material
+
+Here you can find a some videos of some experiments and how works the robot.
+
