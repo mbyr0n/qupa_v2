@@ -1,17 +1,40 @@
 # Argos QUPA robot
-## How to compile argos3 QUPA robot ?
 
-1. Clone the repository 
+The QUPA robot is a modular, low-cost platform developed in Ecuador by the CoRAL laboratory at the Escuela Superior Politécnica del Litoral (ESPOL). Designed and focuses on swarm robotics applications. The platform is built to be easy to assemble and operate.
 
-```
+### Key Features
+- **Omnidirectional camera**
+- **6 proximity sensors**
+- **1 ground color sensor**
+- **5 LEDs**
+- **UV-LEDs**
+
+![QUPA ROBOT DESCRIPTION](/arenas/images/qupa_descriptions.JPG)
+
+*Current Development:* A gripper mechanism is currently being implemented for the robot.
+
+## How to Compile the Argos3 QUPA Robot
+
+Follow these steps to compile the QUPA robot binaries for the Argos3 simulator.
+
+### 1. Clone the Repository
+Download the source code from the GitHub repository:
+
+```bash
 git clone https://github.com/coral-espol/qupa_v2.git
 ```
-2. Compile the binaries 
+
+### 2. Compile the binaries 
+
+Navigate to the project directory and run the build process.
 
 ```
 cd ~/qupa_v2
 rm -rf build && mkdir build && cd build
+```
+Configure the build with CMake. 
 
+```
 cmake ../src \
   -DCMAKE_BUILD_TYPE=Release \
   -DARGOS_BUILD_FOR=simulator \
@@ -38,10 +61,10 @@ cmake -DCMAKE_BUILD_TYPE=Release \
 make -j"$(nproc)"
 make install
 ```
-3. Test the argos QUPA robot 
+### 3. Test the argos QUPA robot 
 
 ```
 argos3 -c test_qupa.argos
 ```
-![QUPA ROBOT](qupas_argops3.png)
-![QUPA SENSORS BLOBS](bloobs_leds.png)
+![QUPA ROBOT](/arenas/images/qupas_argops3.png)
+![QUPA SENSORS BLOBS](/arenas/images/bloobs_leds.png)
