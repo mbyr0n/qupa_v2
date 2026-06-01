@@ -243,7 +243,7 @@ namespace argos {
 
    REGISTER_SENSOR(CQupaLightRotZOnlySensor,
                    "qupa_light", "rot_z_only",
-                   "Carlo Pinciroli [ilpincy@gmail.com]",
+                   "Gabriel Madroñero, Jose Santos",
                    "1.0",
                    "The qupa light sensor (optimized for 2D).",
                    "This sensor accesses a set of light sensors. The sensors all return a value\n"

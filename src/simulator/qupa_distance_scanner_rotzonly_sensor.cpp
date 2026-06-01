@@ -338,7 +338,7 @@ namespace argos {
 
    REGISTER_SENSOR(CQupaDistanceScannerRotZOnlySensor,
                    "qupa_distance_scanner", "rot_z_only",
-                   "Carlo Pinciroli [ilpincy@gmail.com]",
+                   "Gabriel Madroñero, Jose Santos",
                    "1.0",
                    "The qupa distance scanner sensor (optimized for 2D).",
                    "This sensor accesses the qupa distance scanner sensor. For a complete\n"

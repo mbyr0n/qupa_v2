@@ -127,7 +127,7 @@ namespace argos {
 
    REGISTER_SENSOR(CQupaProximityDefaultSensor,
                    "qupa_proximity", "default",
-                   "Carlo Pinciroli [ilpincy@gmail.com]",
+                   "Gabriel Madroñero, Jose Santos",
                    "1.0",
                    "The qupa proximity sensor.",
                    "This sensor accesses the qupa proximity sensor. For a complete description\n"

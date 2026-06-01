@@ -131,7 +131,7 @@ namespace argos {
 
    REGISTER_SENSOR(CQupaMotorGroundRotZOnlySensor,
                    "qupa_motor_ground", "rot_z_only",
-                   "Carlo Pinciroli [ilpincy@gmail.com]",
+                   "Gabriel Madroñero, Jose Santos",
                    "1.0",
                    "The qupa motor ground sensor.",
                    "This sensor accesses the qupa motor ground sensor. For a complete description\n"

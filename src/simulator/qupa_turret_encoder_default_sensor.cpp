@@ -76,7 +76,7 @@ void CQupaTurretEncoderDefaultSensor::Reset() {
 
 REGISTER_SENSOR(CQupaTurretEncoderDefaultSensor,
                 "qupa_turret_encoder", "default",
-                "Carlo Pinciroli [ilpincy@gmail.com]",
+                "Gabriel Madroñero, Jose Santos",
                 "1.0",
                 "The qupa turret encoder sensor.",
                 "This sensor accesses the qupa turret encoder. For a complete\n"

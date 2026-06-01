@@ -67,7 +67,7 @@ namespace argos {
 
    REGISTER_ACTUATOR(CQupaTurretDefaultActuator,
                      "qupa_turret", "default",
-                     "Carlo Pinciroli [ilpincy@gmail.com]",
+                     "Gabriel Madroñero, Jose Santos",
                      "1.0",
                      "The qupa turret actuator.",
                      "This actuator controls the qupa turret. For a complete\n"

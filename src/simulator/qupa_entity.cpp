@@ -526,7 +526,7 @@ namespace argos {
 
    REGISTER_ENTITY(CQupaEntity,
                    "qupa",
-                   "Carlo Pinciroli [ilpincy@gmail.com]",
+                   "Gabriel Madroñero, Jose Santos",
                    "1.0",
                    "The qupa robot, developed in the Swarmanoid project.",
                    "The qupa is a wheeled robot developed in the Swarmanoid Project. It is a\n"

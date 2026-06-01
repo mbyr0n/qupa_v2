@@ -47,7 +47,7 @@ namespace argos {
 
 REGISTER_ACTUATOR(CQupaGripperDefaultActuator,
                   "qupa_gripper", "default",
-                  "Carlo Pinciroli [ilpincy@gmail.com]",
+                  "Gabriel Madroñero, Jose Santos",
                   "1.0",
                   "The qupa gripper actuator.",
                   "This actuator controls the qupa gripper. For a complete description of its\n"
