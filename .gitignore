@@ -1,4 +1,17 @@
-# Ignore node_modules and dependency directories
 build/
 .vscode/
-.json
+*.json
+
+# Legacy paths (moved to src/plugins/robots/qupa/)
+/arenas/
+/codigos/
+/src/CMakeLists.txt
+/src/control_interface/
+/src/simulator/
+
+# Auxiliary files (not for the fork)
+/docs/
+/tests/
+/graphify-out/
+/scripts/
+revision_*.md

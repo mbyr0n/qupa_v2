@@ -9,7 +9,7 @@ The QUPA robot is a modular, low-cost platform developed in Ecuador by the CoRAL
 - **5 LEDs**
 - **UV-LEDs**
 
-![QUPA ROBOT DESCRIPTION](/arenas/images/qupa_descriptions.JPG)
+![QUPA ARENA](examples/experiments/images/qupas_argops3.png)
 
 *Current Development:* A gripper mechanism is currently being implemented for the robot.
 
@@ -45,6 +45,12 @@ make install
 ```
 > Note: You must to edit your **DCMAKE_INSTALL_PREFIX** with your diretory where argos3 was installed. 
 
+For local development without installing globally, point ARGoS to the build folder:
+
+```bash
+export ARGOS_PLUGIN_PATH="$HOME/qupa_v2/build${ARGOS_PLUGIN_PATH:+:$ARGOS_PLUGIN_PATH}"
+```
+
 To know where argos3 was installed and your own rute put in your terminal the next command.
 
 ```
@@ -56,7 +62,7 @@ cmake -DCMAKE_BUILD_TYPE=Release \
       -DARGOS_BUILD_FOR=simulator \
       -DCMAKE_INSTALL_PREFIX="/usr/local" \
       -DCMAKE_PREFIX_PATH="/usr/local" \
-      ../qupa
+      ../src
 make -j"$(nproc)"
 make install
 ```
@@ -64,23 +70,42 @@ make install
 ### 3. Test the argos QUPA robot 
 
 ```
-argos3 -c arenas/test_qupa.argos
+argos3 -c examples/experiments/test_qupa.argos
 ```
-<!--![QUPA ROBOT](/arenas/images/qupas_argops3.png) 
-![QUPA SENSORS BLOBS](/arenas/images/bloobs_leds.png) -->
 
-### 4. Media material
+Lua example controllers live in `examples/controllers/lua`.
+
+### 4. Native tags for drone detection
+
+QUPA can expose a native ARGoS tag that drones detect through `tag_medium`.
+Define a tag medium and opt in per robot:
+
+```xml
+<media>
+  <tag id="tags" index="grid" grid_size="5,5,5" />
+</media>
+
+<arena ...>
+  <qupa id="q0" marker_id="0" tag_medium="tags">
+    <body position="0,0,0" orientation="0,0,0" />
+    <controller config="my_controller" />
+  </qupa>
+</arena>
+```
+
+`marker_id` becomes the tag payload. If `tag_medium` is omitted, the robot is
+created without a tag.
+
+### 5. Media material
 
 Here you can find a some examples (click on the image to show the video).
 
 1. Simple simulation with the QUPA robot
-[![Example 1](arenas/images/frame_0202.png)](https://drive.google.com/file/d/1NISa6QuCtN9FcV-uvQB4OstGJXl4G2BH/view?usp=sharing) 
+[![Example 1](examples/experiments/images/frame_0202.png)](https://drive.google.com/file/d/1NISa6QuCtN9FcV-uvQB4OstGJXl4G2BH/view?usp=sharing) 
 
 2. Making experiments example 1
-[![Example 1](arenas/images/frame_04608.png)](https://drive.google.com/file/d/1CMT9WoHcIdt_1VtyqQ2vo7GJ7JlBuMgB/view?usp=sharing) 
+[![Example 1](examples/experiments/images/frame_04608.png)](https://drive.google.com/file/d/1CMT9WoHcIdt_1VtyqQ2vo7GJ7JlBuMgB/view?usp=sharing) 
 
 3. Making experiments example 2
-[![Example 1](arenas/images/example1.png)](https://drive.google.com/file/d/18gKZoMNuN__hlouXpRjukzwSWbfgSCyx/view?usp=drive_link)
-
-
+[![Example 1](examples/experiments/images/example1.png)](https://drive.google.com/file/d/18gKZoMNuN__hlouXpRjukzwSWbfgSCyx/view?usp=drive_link)
 
