@@ -15,69 +15,93 @@ The QUPA robot is a modular, low-cost platform developed in Ecuador by the CoRAL
 
 ## How to Compile the Argos3 QUPA Robot
 
-Follow these steps to compile the QUPA robot binaries for the Argos3 simulator.
+Follow these steps to compile the QUPA robot plugin for the ARGoS3 simulator.
 
 ### 1. Clone the Repository
-Download the source code from the GitHub repository:
 
 ```bash
 git clone https://github.com/coral-espol/qupa_v2.git
 ```
 
-### 2. Compile the binaries 
+### 2. Prerequisites — Install ARGoS3
 
-Navigate to the project directory and run the build process.
+The QUPA plugin requires ARGoS3 to be installed system-wide.
 
+#### 2.1 Install dependencies (Ubuntu 24)
+
+```bash
+sudo apt update
+sudo apt install build-essential cmake git \
+  libfreeimage-dev libfreeimageplus-dev \
+  qtbase5-dev libqt5opengl5-dev freeglut3-dev libxi-dev libxmu-dev \
+  liblua5.3-dev lua5.3 doxygen graphviz
 ```
+
+> ⚠ Ubuntu 24 no incluye el paquete `qt5-default`. Qt6 es el default,
+> pero ARGoS necesita Qt5, por eso se instala `qtbase5-dev` y
+> `libqt5opengl5-dev` explícitamente.
+> Si usás Wayland, instalá también `qtwayland5`.
+
+#### 2.2 Clone and build ARGoS
+
+```bash
+git clone https://github.com/ilpincy/argos3.git
+cd argos3
+mkdir build_simulator && cd build_simulator
+cmake ../src \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DCMAKE_INSTALL_PREFIX=/usr/local \
+  -DARGOS_BUILD_FOR=simulator
+make -j"$(nproc)"
+make doc
+sudo make install
+sudo ldconfig
+```
+
+#### 2.3 Verify
+
+```bash
+argos3 -q all
+```
+
+Deberías ver una lista de plugins cargados sin errores.
+
+### 3. Compile the QUPA plugin
+
+```bash
 cd ~/qupa_v2
 rm -rf build && mkdir build && cd build
-```
-Configure the build with CMake. 
-
-```
 cmake ../src \
   -DCMAKE_BUILD_TYPE=Release \
   -DARGOS_BUILD_FOR=simulator \
-  -DCMAKE_INSTALL_PREFIX="$HOME/swarm_robotics/argos3-dist"
-
+  -DCMAKE_INSTALL_PREFIX=/usr/local
 make -j"$(nproc)"
-make install
+sudo make install
 ```
-> Note: You must to edit your **DCMAKE_INSTALL_PREFIX** with your diretory where argos3 was installed. 
 
-For local development without installing globally, point ARGoS to the build folder:
+Para desarrollo local sin instalar globalmente, usar `ARGOS_PLUGIN_PATH`:
 
 ```bash
 export ARGOS_PLUGIN_PATH="$HOME/qupa_v2/build${ARGOS_PLUGIN_PATH:+:$ARGOS_PLUGIN_PATH}"
 ```
 
-To know where argos3 was installed and your own rute put in your terminal the next command.
+### 4. Test the QUPA robot
 
-```
-which argos3 
-```
-the next command line is an example for other location.
-```
-cmake -DCMAKE_BUILD_TYPE=Release \
-      -DARGOS_BUILD_FOR=simulator \
-      -DCMAKE_INSTALL_PREFIX="/usr/local" \
-      -DCMAKE_PREFIX_PATH="/usr/local" \
-      ../src
-make -j"$(nproc)"
-make install
-```
-
-### 3. Test the argos QUPA robot 
-
-```
+```bash
 argos3 -c examples/experiments/test_qupa.argos
 ```
 
 Lua example controllers live in `examples/controllers/lua`.
 
-### 4. Native tags for drone detection
+The robot 3D model is rendered from `qupa.obj` at runtime (not baked into the
+code). The OBJ file lives in the plugin directory and is transformed to match
+the physical body dimensions (scale 1.13×, Y-up to Z-up rotation).
+
+### 5. Native tags for drone detection
 
 QUPA can expose a native ARGoS tag that drones detect through `tag_medium`.
+When enabled, the tag is also rendered visually as a checkerboard square on top
+of the robot in the 3D visualization.
 Define a tag medium and opt in per robot:
 
 ```xml
@@ -96,7 +120,7 @@ Define a tag medium and opt in per robot:
 `marker_id` becomes the tag payload. If `tag_medium` is omitted, the robot is
 created without a tag.
 
-### 5. Media material
+### 6. Media material
 
 Here you can find a some examples (click on the image to show the video).
 

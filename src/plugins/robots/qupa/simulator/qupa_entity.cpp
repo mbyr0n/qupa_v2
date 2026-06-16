@@ -73,7 +73,7 @@ namespace argos {
 
    static const Real LED_RING_ELEVATION         = 0.10f;
    static const Real RAB_ELEVATION              = 0.08f;
-   static const Real BEACON_ELEVATION           = 0.13f;
+   static const Real BEACON_ELEVATION           = 0.15f;
 
    static const Real GRIPPER_ELEVATION          = LED_RING_ELEVATION;
 
@@ -81,7 +81,7 @@ namespace argos {
    static const CRadians HALF_LED_ANGLE_SLICE   = LED_ANGLE_SLICE * 0.5f;
 
    static const Real OMNIDIRECTIONAL_CAMERA_ELEVATION = 0.245f;
-   static const Real TAG_ELEVATION = BODY_HEIGHT + 0.002f;
+   static const Real TAG_ELEVATION = 0.245f;
    static const Real TAG_SIDE_LENGTH = 0.08f;
 
    //  ángulos de los 6 sensores de proximidad

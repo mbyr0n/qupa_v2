@@ -32,11 +32,16 @@ namespace argos {
        */
       void DrawLEDs(CQupaEntity& c_entity);
 
-      /* Modelo OBJ compartido por todos los QUPA. */
-      static CQTOpenGLObjModel m_cModel;
-       
+      /**
+       * @brief Dibuja los tags (AprilTag) de la entidad.
+       */
+      void DrawTag(CQupaEntity& c_entity);
+
       /* Display list para un único LED (una esfera pequeña) */
       GLuint m_unLEDList;
+
+      /** Textura 2D para el tag checkerboard */
+      GLuint m_unTagTexture;
 
      };
 }

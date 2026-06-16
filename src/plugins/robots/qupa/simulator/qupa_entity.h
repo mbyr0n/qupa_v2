@@ -124,6 +124,10 @@ namespace argos {
          return m_unMarkerId;
       }
 
+      inline CTagEquippedEntity* GetTagEquippedEntity() {
+         return m_pcTagEquippedEntity;
+      }
+
       virtual std::string GetTypeDescription() const {
          return "qupa";
       }

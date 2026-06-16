@@ -2,6 +2,7 @@
 #include "qupa_entity.h"
 
 #include <argos3/plugins/simulator/entities/led_equipped_entity.h>
+#include <argos3/plugins/simulator/entities/tag_equipped_entity.h>
 #include <argos3/core/utility/math/vector3.h>
 #include <argos3/core/utility/datatypes/color.h>
 
@@ -21,11 +22,6 @@ namespace argos {
 /****************************************/
 /****************************************/
 
-CQTOpenGLObjModel CQTOpenGLQupa::m_cModel("qupa.obj");
-
-/****************************************/
-/****************************************/
-
 CQTOpenGLQupa::CQTOpenGLQupa() {
     // Creamos la display list para una esfera de LED
     m_unLEDList = glGenLists(1);
@@ -36,6 +32,17 @@ CQTOpenGLQupa::CQTOpenGLQupa() {
     gluSphere(pcQuadric, 0.015f, 32, 32);
     gluDeleteQuadric(pcQuadric);
     glEndList();
+
+    /* Textura checkerboard 4x4 para los AprilTags */
+    static const GLfloat pfTagTexture[] = {
+       1.0f,1.0f,1.0f, 0.0f,0.0f,0.0f, 1.0f,1.0f,1.0f, 0.0f,0.0f,0.0f,
+       0.0f,0.0f,0.0f, 1.0f,1.0f,1.0f, 0.0f,0.0f,0.0f, 1.0f,1.0f,1.0f,
+       1.0f,1.0f,1.0f, 0.0f,0.0f,0.0f, 1.0f,1.0f,1.0f, 0.0f,0.0f,0.0f,
+       0.0f,0.0f,0.0f, 1.0f,1.0f,1.0f, 0.0f,0.0f,0.0f, 1.0f,1.0f,1.0f,
+    };
+    glGenTextures(1, &m_unTagTexture);
+    glBindTexture(GL_TEXTURE_2D, m_unTagTexture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 4, 4, 0, GL_RGB, GL_FLOAT, pfTagTexture);
 }
 
 /****************************************/
@@ -44,6 +51,7 @@ CQTOpenGLQupa::CQTOpenGLQupa() {
 CQTOpenGLQupa::~CQTOpenGLQupa() {
     if(QOpenGLContext::currentContext() != NULL) {
         glDeleteLists(m_unLEDList, 1);
+        glDeleteTextures(1, &m_unTagTexture);
     }
 }
 
@@ -51,6 +59,9 @@ CQTOpenGLQupa::~CQTOpenGLQupa() {
 /****************************************/
 
 void CQTOpenGLQupa::Draw(CQupaEntity& c_entity) {
+    /* Modelo OBJ compartido por todos los QUPA, lazy-init */
+    static CQTOpenGLObjModel m_cModel("qupa.obj");
+
     /* Agrega una luz de relleno desde atrás-izquierda para revelar geometría
      * en las caras opuestas a la luz principal de ARGoS (GL_LIGHT0).
      * GL_LIGHTING_BIT guarda/restaura todo el estado de luces. */
@@ -67,16 +78,20 @@ void CQTOpenGLQupa::Draw(CQupaEntity& c_entity) {
 
     glPushMatrix();
 
-    glScalef(0.23f, 0.23f, 0.23f);
-    glTranslatef(-0.01f / 0.23f, -0.005f / 0.23f, 0.0f);
+    /* El modelo se exportó con Y-up; ARGoS usa Z-up */
+    glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+    glScalef(1.13f, 1.13f, 1.13f);
+    glTranslatef(0.0f, -0.003f, 0.0f);
 
     glEnable(GL_NORMALIZE);
+    glDisable(GL_TEXTURE_2D);
     m_cModel.Draw();
     glDisable(GL_NORMALIZE);
 
     glPopMatrix();
 
     DrawLEDs(c_entity);
+    DrawTag(c_entity);
     glPopAttrib();
 }
 
@@ -123,6 +138,45 @@ void CQTOpenGLQupa::DrawLEDs(CQupaEntity& c_entity) {
         glDisable(GL_LIGHTING);
     }
 }
+
+/****************************************/
+/****************************************/
+
+void CQTOpenGLQupa::DrawTag(CQupaEntity& c_entity) {
+    CTagEquippedEntity* pcTagEquipped = c_entity.GetTagEquippedEntity();
+    if(pcTagEquipped == nullptr) return;
+    if(!pcTagEquipped->IsEnabled()) return;
+    const auto& vecTags = pcTagEquipped->GetInstances();
+    if(vecTags.empty()) return;
+    glPushAttrib(GL_ENABLE_BIT | GL_LIGHTING_BIT | GL_TEXTURE_BIT);
+    glDisable(GL_LIGHTING);
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, m_unTagTexture);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    for(const auto& sInstance : vecTags) {
+        glPushMatrix();
+        glTranslatef(sInstance.PositionOffset.GetX(),
+                     sInstance.PositionOffset.GetY(),
+                     sInstance.PositionOffset.GetZ());
+        Real fSide = sInstance.Tag.GetSideLength();
+        glScalef(fSide, fSide, 1.0f);
+        glBegin(GL_QUADS);
+        glNormal3f(0.0f, 0.0f, 1.0f);
+        glTexCoord2f(1.0f, 1.0f); glVertex3f( 0.5f,  0.5f, 0.0f);
+        glTexCoord2f(0.0f, 1.0f); glVertex3f(-0.5f,  0.5f, 0.0f);
+        glTexCoord2f(0.0f, 0.0f); glVertex3f(-0.5f, -0.5f, 0.0f);
+        glTexCoord2f(1.0f, 0.0f); glVertex3f( 0.5f, -0.5f, 0.0f);
+        glEnd();
+        glPopMatrix();
+    }
+    glPopAttrib();
+}
+
+/****************************************/
+/****************************************/
 
 class CQTOpenGLOperationDrawQupaNormal : public CQTOpenGLOperationDrawNormal {
 public:
